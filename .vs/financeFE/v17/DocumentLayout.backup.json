@@ -3,28 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\fanco\\source\\repos\\financeFE\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\components\\board\\boardcomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\components\\board\\boardcomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\assets\\main.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\assets\\main.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\components\\admin\\balancecomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\components\\admin\\balancecomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\components\\admin\\accountsbalance\\balancecomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\components\\admin\\accountsbalance\\balancecomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\components\\admin\\accountcomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\components\\admin\\accountcomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\components\\menucomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\components\\menucomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\resources\\services\\adminservices.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\resources\\services\\adminservices.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\components\\admin\\admincomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\components\\admin\\admincomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\components\\board\\accountsbalance\\accountgroupscomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\components\\board\\accountsbalance\\accountgroupscomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -67,79 +55,40 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "BoardComponent.vue",
-              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\board\\BoardComponent.vue",
-              "RelativeDocumentMoniker": "src\\components\\board\\BoardComponent.vue",
-              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\board\\BoardComponent.vue",
-              "RelativeToolTip": "src\\components\\board\\BoardComponent.vue",
-              "ViewState": "AgIAAEsAAAAAAAAAAAAAAFwAAAALAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-08-05T12:02:41.263Z",
+              "Title": "main.css",
+              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\assets\\main.css",
+              "RelativeDocumentMoniker": "src\\assets\\main.css",
+              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\assets\\main.css",
+              "RelativeToolTip": "src\\assets\\main.css",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAAAFcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-08-17T08:15:53.891Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "MenuComponent.vue",
-              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\MenuComponent.vue",
-              "RelativeDocumentMoniker": "src\\components\\MenuComponent.vue",
-              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\MenuComponent.vue",
-              "RelativeToolTip": "src\\components\\MenuComponent.vue",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAXAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "AccountGroupsComponent.vue",
+              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\board\\accountsBalance\\AccountGroupsComponent.vue",
+              "RelativeDocumentMoniker": "src\\components\\board\\accountsBalance\\AccountGroupsComponent.vue",
+              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\board\\accountsBalance\\AccountGroupsComponent.vue",
+              "RelativeToolTip": "src\\components\\board\\accountsBalance\\AccountGroupsComponent.vue",
+              "ViewState": "AgIAAGkAAAAAAAAAAAAAAI8AAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-08-05T11:38:32.06Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "adminServices.js",
-              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\resources\\services\\adminServices.js",
-              "RelativeDocumentMoniker": "src\\resources\\services\\adminServices.js",
-              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\resources\\services\\adminServices.js",
-              "RelativeToolTip": "src\\resources\\services\\adminServices.js",
-              "ViewState": "AgIAABgAAAAAAAAAAAAAACkAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-08-05T11:05:10.065Z",
+              "WhenOpened": "2025-08-17T08:08:59.512Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "BalanceComponent.vue",
-              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\admin\\BalanceComponent.vue",
-              "RelativeDocumentMoniker": "src\\components\\admin\\BalanceComponent.vue",
-              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\admin\\BalanceComponent.vue",
-              "RelativeToolTip": "src\\components\\admin\\BalanceComponent.vue",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAAADkAAAAOAAAAAAAAAA==",
+              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\admin\\accountsBalance\\BalanceComponent.vue",
+              "RelativeDocumentMoniker": "src\\components\\admin\\accountsBalance\\BalanceComponent.vue",
+              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\admin\\accountsBalance\\BalanceComponent.vue",
+              "RelativeToolTip": "src\\components\\admin\\accountsBalance\\BalanceComponent.vue",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-08-05T10:39:35.416Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AdminComponent.vue",
-              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\admin\\AdminComponent.vue",
-              "RelativeDocumentMoniker": "src\\components\\admin\\AdminComponent.vue",
-              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\admin\\AdminComponent.vue",
-              "RelativeToolTip": "src\\components\\admin\\AdminComponent.vue",
-              "ViewState": "AgIAAEkAAAAAAAAAAAAYwIEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-08-04T16:23:19.771Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "AccountComponent.vue",
-              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\admin\\AccountComponent.vue",
-              "RelativeDocumentMoniker": "src\\components\\admin\\AccountComponent.vue",
-              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\admin\\AccountComponent.vue",
-              "RelativeToolTip": "src\\components\\admin\\AccountComponent.vue",
-              "ViewState": "AgIAADMAAAAAAAAAAAAAADgAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-08-04T16:23:26.274Z",
+              "WhenOpened": "2025-08-15T10:00:18.35Z",
               "EditorCaption": ""
             }
           ]
