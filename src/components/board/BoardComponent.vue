@@ -18,6 +18,7 @@
   // Synchronizácia index -> router
   watch(activeTab, (newIndex) => {
     const newTab = indexToRoute[newIndex]
+    if (!newTab) return // ak neexistuje (napr. fiscalYearDetail), nerob nič
     if (route.path.split('/').pop() !== newTab) {
       router.push(`/board/${newTab}`)
     }
@@ -39,7 +40,7 @@
         <BTab title="Stavy účtov" key="accountGroups">
           <router-view v-if="activeTab === 0" />
         </BTab>
-        <BTab title="Živnosť" key="business" disabled>
+        <BTab title="Živnosť" key="business">
           <router-view v-if="activeTab === 1" />
         </BTab>
       </BTabs>

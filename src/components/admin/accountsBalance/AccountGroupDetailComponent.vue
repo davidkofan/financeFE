@@ -1,5 +1,6 @@
 <script setup>
   import { listAccount, createAccount, updateAccount, deleteAccount } from '@/resources/services/accountsBalanceServices';
+  import { generate24CharGUID } from '@/resources/globalFunctions';
   import Balance from '@/components/admin/accountsBalance/BalanceComponent.vue';
   import CustomModal from '@/components/common/CustomModal.vue';
   import { useRouter, useRoute } from 'vue-router';
@@ -38,13 +39,13 @@
       <BModal :title="modalConfig.mode === 'create' ? 'Pridať účet' : 'Upraviť účet'" v-model="modalConfig.show" noFooter @hidden="closeModal()">
         <BForm @submit.prevent="submitForm">
           <div class="row">
-            <BForm-group label="Názov" label-for="name">
+            <BFormGroup label="Názov" label-for="name">
               <BForm-input id="name" v-model="modalConfig.formData.name" required></BForm-input>
-            </BForm-group>
+            </BFormGroup>
 
-            <BForm-group label="Popis" label-for="description">
-              <BFormTextarea id="description" v-model="modalConfig.formData.description" rows="3"></BFormTextarea>
-            </BForm-group>
+            <BFormGroup label="Popis" label-for="description">
+              <BFormTextarea id="description" v-model="modalConfig.formData.description" rows="3" required></BFormTextarea>
+            </BFormGroup>
           </div>
 
           <BButtonGroup class="mt-3">
@@ -123,7 +124,7 @@
         const payload = {
           ...this.modalConfig.formData,
           groupId: this.accountGroupId,
-          id: this.generate24CharGUID()
+          id: generate24CharGUID()
         };
         createAccount(payload)
           .then(() => {
@@ -177,14 +178,6 @@
       },
       closeModal() {
         this.modalConfig = Object.assign({}, { show: false });
-      },
-      generate24CharGUID() {
-        const chars = 'abcdef0123456789';
-        let guid = '';
-        for (let i = 0; i < 24; i++) {
-          guid += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return guid;
       },
       goBack() {
         this.router.back();

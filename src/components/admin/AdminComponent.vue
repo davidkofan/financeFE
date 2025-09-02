@@ -14,11 +14,12 @@
   const indexToRoute = ['accountGroups', 'business', 'import-export']
 
   // Aktívny tab (index)
-  const activeTab = ref(routeToIndex[route.path.split('/').pop()] ?? 0)
+  const activeTab = ref(routeToIndex[route.path.split('/')[2]] ?? 0)
 
   // Synchronizácia index -> router
   watch(activeTab, (newIndex) => {
     const newTab = indexToRoute[newIndex]
+    if (!newTab) return // ak neexistuje (napr. fiscalYearDetail), nerob nič
     if (route.path.split('/').pop() !== newTab) {
       router.push(`/admin/${newTab}`)
     }
@@ -27,7 +28,7 @@
   // Synchronizácia router -> index
   watch(route, (r) => {
     const last = r.path.split('/').pop()
-    activeTab.value = routeToIndex[last] ?? 0
+    activeTab.value = routeToIndex[last] ?? activeTab.value
   })
 </script>
 

@@ -1,5 +1,6 @@
 <script setup>
   import { listAccountGroup, createAccountGroup, updateAccountGroup, deleteAccountGroup } from '@/resources/services/accountsBalanceServices';
+  import { generate24CharGUID } from '@/resources/globalFunctions';
   import CustomModal from '@/components/common/CustomModal.vue';
   import { useRouter, useRoute } from 'vue-router';
 </script>
@@ -34,13 +35,13 @@
     <BModal :title="mainFormModalConfig.mode === 'create' ? 'Pridať skupinu účtov' : 'Upraviť skupinu účtov'" v-model="mainFormModalConfig.show" noFooter @hidden="closeMainFormModal()">
       <BForm @submit.prevent="submitForm">
         <div class="row">
-          <BForm-group label="Názov" label-for="name">
+          <BFormGroup label="Názov" label-for="name">
             <BForm-input id="name" v-model="mainFormModalConfig.formData.name" required></BForm-input>
-          </BForm-group>
+          </BFormGroup>
 
-          <BForm-group label="Popis" label-for="description">
+          <BFormGroup label="Popis" label-for="description">
             <BFormTextarea id="description" v-model="mainFormModalConfig.formData.description" rows="3"></BFormTextarea>
-          </BForm-group>
+          </BFormGroup>
         </div>
 
         <BButtonGroup class="mt-3">
@@ -106,7 +107,7 @@
       createAccountGroup() {
         const payload = {
           ...this.mainFormModalConfig.formData,
-          id: this.generate24CharGUID()
+          id: generate24CharGUID()
         };
         createAccountGroup(payload)
           .then(() => {
@@ -162,15 +163,6 @@
       openAccountsGroupDetail(data) {
         this.router.push({ name: 'accountsGroupDetail', params: { id: data.id } });
       },
-      generate24CharGUID() {
-        const chars = 'abcdef0123456789';
-        let guid = '';
-        for (let i = 0; i < 24; i++) {
-          guid += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return guid;
-      },
-
     },
   }
 </script>

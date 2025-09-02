@@ -12,14 +12,14 @@
 
   <b-collapse v-model="showImport">
     <div class="row my-2">
-      <BForm-group class="col-12 col-md-9 mt-1">
+      <BFormGroup class="col-12 col-md-9 mt-1">
         <BForm-file id="file-input"
                      v-model="importFile"
                      accept=".json"
                      :state="!!importFile"
                      placeholder="Žiadny súbor nevybraný"
                      browse-text="Vybrať súbor"></BForm-file>
-      </BForm-group>
+      </BFormGroup>
 
       <div class="col-12 col-md-3 mt-1">
         <BButton v-if="importFile" class="w-100" @click="importDataModal" variant="dark">Importovať</BButton>

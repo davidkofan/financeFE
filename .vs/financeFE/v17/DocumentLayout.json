@@ -3,24 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\fanco\\source\\repos\\financeFE\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\components\\admin\\accountsbalance\\accountgroupscomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\components\\admin\\accountsbalance\\accountgroupscomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\components\\board\\businessfinances\\businessfinancescomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\components\\board\\businessfinances\\businessfinancescomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\components\\admin\\businessfinances\\businessfinancescomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\components\\admin\\businessfinances\\businessfinancescomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\main.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\main.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\assets\\main.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\assets\\main.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\components\\admin\\accountsbalance\\balancecomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\components\\admin\\accountsbalance\\balancecomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\components\\board\\accountsbalance\\accountgroupscomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\components\\board\\accountsbalance\\accountgroupscomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\components\\admin\\businessfinances\\fiscalyeardetailcomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\components\\admin\\businessfinances\\fiscalyeardetailcomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,12 +22,8 @@
       "DocumentGroups": [
         {
           "DockedHeight": 174,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 6,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:131:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:133:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
@@ -54,74 +42,46 @@
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:132:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Bookmark",
               "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "BusinessFinancesComponent.vue",
-              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\admin\\businessFinances\\BusinessFinancesComponent.vue",
-              "RelativeDocumentMoniker": "src\\components\\admin\\businessFinances\\BusinessFinancesComponent.vue",
-              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\admin\\businessFinances\\BusinessFinancesComponent.vue",
-              "RelativeToolTip": "src\\components\\admin\\businessFinances\\BusinessFinancesComponent.vue",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAACEAAAA3AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-08-18T06:46:44.027Z",
+              "Title": "main.js",
+              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\main.js",
+              "RelativeDocumentMoniker": "src\\main.js",
+              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\main.js",
+              "RelativeToolTip": "src\\main.js",
+              "ViewState": "AgIAACIAAAAAAAAAAAAwwC4AAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-09-01T15:35:22.497Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "AccountGroupsComponent.vue",
-              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\admin\\accountsBalance\\AccountGroupsComponent.vue",
-              "RelativeDocumentMoniker": "src\\components\\admin\\accountsBalance\\AccountGroupsComponent.vue",
-              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\admin\\accountsBalance\\AccountGroupsComponent.vue",
-              "RelativeToolTip": "src\\components\\admin\\accountsBalance\\AccountGroupsComponent.vue",
-              "ViewState": "AgIAAHkAAAAAAAAAAAAAAJwAAAApAAAAAAAAAA==",
+              "Title": "BusinessFinancesComponent.vue",
+              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\board\\businessFinances\\BusinessFinancesComponent.vue",
+              "RelativeDocumentMoniker": "src\\components\\board\\businessFinances\\BusinessFinancesComponent.vue",
+              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\board\\businessFinances\\BusinessFinancesComponent.vue",
+              "RelativeToolTip": "src\\components\\board\\businessFinances\\BusinessFinancesComponent.vue",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEAAAABGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-08-18T06:44:10.923Z",
+              "WhenOpened": "2025-09-01T14:52:35.692Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "main.css",
-              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\assets\\main.css",
-              "RelativeDocumentMoniker": "src\\assets\\main.css",
-              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\assets\\main.css",
-              "RelativeToolTip": "src\\assets\\main.css",
-              "ViewState": "AgIAAEsAAAAAAAAAAAAAAFcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-08-17T08:15:53.891Z",
+              "Title": "FiscalYearDetailComponent.vue",
+              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\admin\\businessFinances\\FiscalYearDetailComponent.vue",
+              "RelativeDocumentMoniker": "src\\components\\admin\\businessFinances\\FiscalYearDetailComponent.vue",
+              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\admin\\businessFinances\\FiscalYearDetailComponent.vue",
+              "RelativeToolTip": "src\\components\\admin\\businessFinances\\FiscalYearDetailComponent.vue",
+              "ViewState": "AgIAALwAAAAAAAAAAAAAAHEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-09-01T14:49:06.62Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "AccountGroupsComponent.vue",
-              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\board\\accountsBalance\\AccountGroupsComponent.vue",
-              "RelativeDocumentMoniker": "src\\components\\board\\accountsBalance\\AccountGroupsComponent.vue",
-              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\board\\accountsBalance\\AccountGroupsComponent.vue",
-              "RelativeToolTip": "src\\components\\board\\accountsBalance\\AccountGroupsComponent.vue",
-              "ViewState": "AgIAAGkAAAAAAAAAAAAAAI8AAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-08-17T08:08:59.512Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "BalanceComponent.vue",
-              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\admin\\accountsBalance\\BalanceComponent.vue",
-              "RelativeDocumentMoniker": "src\\components\\admin\\accountsBalance\\BalanceComponent.vue",
-              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\admin\\accountsBalance\\BalanceComponent.vue",
-              "RelativeToolTip": "src\\components\\admin\\accountsBalance\\BalanceComponent.vue",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-08-15T10:00:18.35Z"
             }
           ]
         },

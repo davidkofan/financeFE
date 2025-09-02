@@ -1,5 +1,6 @@
 <script setup>
   import { listBalance, createBalance, updateBalance, deleteBalance } from '@/resources/services/accountsBalanceServices';
+  import { generate24CharGUID } from '@/resources/globalFunctions';
   import CustomModal from '@/components/common/CustomModal.vue';
 
   defineProps({
@@ -30,17 +31,17 @@
     <BModal :title="mainFormModalConfig.mode === 'create' ? 'Pridať stav účtu' : 'Upraviť stav účtu'" v-model="mainFormModalConfig.show" noFooter @hidden="closeMainFormModal()" teleport-to="body">
       <BForm @submit.prevent="submitForm">
         <div class="row">
-          <BForm-group label="Rok" label-for="year" class="col-12 col-md-4">
-            <BForm-select id="year" v-model="mainFormModalConfig.formData.year" :options="yearOptions" required />
-          </BForm-group>
+          <BFormGroup label="Rok" label-for="year" class="col-12 col-md-4">
+            <BForm-select id="year" v-model="mainFormModalConfig.formData.year" :options="yearOptions" required/>
+          </BFormGroup>
 
-          <BForm-group label="Mesiac" label-for="month" class="col-12 col-md-4">
-            <BForm-select id="month" v-model="mainFormModalConfig.formData.month" :options="monthOptions" required />
-          </BForm-group>
+          <BFormGroup label="Mesiac" label-for="month" class="col-12 col-md-4">
+            <BForm-select id="month" v-model="mainFormModalConfig.formData.month" :options="monthOptions" required/>
+          </BFormGroup>
 
-          <BForm-group label="Hodnota" label-for="amount" class="col-12 col-md-4">
+          <BFormGroup label="Hodnota" label-for="amount" class="col-12 col-md-4">
             <BForm-input id="amount" v-model="mainFormModalConfig.formData.amount" type="number" required></BForm-input>
-          </BForm-group>
+          </BFormGroup>
         </div>
 
         <BButtonGroup class="mt-3">
@@ -153,7 +154,7 @@
         const payload = {
           ...this.mainFormModalConfig.formData,
           accountId: this.accountId,
-          id: this.generate24CharGUID()
+          id: generate24CharGUID()
         }
         createBalance(payload)
           .then(() => {
@@ -205,14 +206,6 @@
           show: false,
           formData: {}
         });
-      },
-      generate24CharGUID() {
-        const chars = 'abcdef0123456789';
-        let guid = '';
-        for (let i = 0; i < 24; i++) {
-          guid += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return guid;
       },
     },
   }

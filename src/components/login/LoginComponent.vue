@@ -35,13 +35,13 @@
       <h2>Prihlásenie</h2>
 
       <BForm @submit.prevent="login" class="p-3 border">
-        <BForm-group label="Meno" label-for="name" class="">
+        <BFormGroup label="Meno" label-for="name" class="">
           <BForm-input id="name" v-model="name" required disabled></BForm-input>
-        </BForm-group>
+        </BFormGroup>
 
-        <BForm-group label="Heslo" label-for="password" class="">
+        <BFormGroup label="Heslo" label-for="password" class="">
           <BForm-input id="password" v-model="password" required type="password"></BForm-input>
-        </BForm-group>
+        </BFormGroup>
 
         <h4 class="mt-3" v-if="errorMessage">
           <b-badge variant="danger">{{ errorMessage }}</b-badge>

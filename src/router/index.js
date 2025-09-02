@@ -1,14 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Login from '@/components/login/LoginComponent.vue';
 
+//board
 import Board from '@/components/board/BoardComponent.vue';
 import BoardAccountGroups from '@/components/board/accountsBalance/AccountGroupsComponent.vue';
-//import BoardBusinessFinances from '@/components/board/accountsBalance/BusinessFinancesComponent.vue';
+import BoardBusinessFinances from '@/components/board/businessFinances/BusinessFinancesComponent.vue';
 
+
+//admin
 import Admin from '@/components/admin/AdminComponent.vue';
+
+//admin - accounts balance
 import AdminAccountGroups from '@/components/admin/accountsBalance/AccountGroupsComponent.vue';
 import AdminAccountGroupDetail from '@/components/admin/accountsBalance/AccountGroupDetailComponent.vue';
+
+//admin - business finances
 import AdminBusinessFinances from '@/components/admin/businessFinances/BusinessFinancesComponent.vue';
+import AdminFiscalYearDetail from '@/components/admin/businessFinances/FiscalYearDetailComponent.vue';
+
+//admin - import/export
 import AdminImportExport from '@/components/admin/importExport/ImportExportComponent.vue';
 
 const routes = [
@@ -30,9 +40,9 @@ const routes = [
         path: 'accountGroups',
         component: BoardAccountGroups
       },
-      //{ path: 'business',
-      //  component: BoardBusinessFinances
-      //},
+      { path: 'business',
+        component: BoardBusinessFinances
+      },
     ]
   },
   {
@@ -42,7 +52,7 @@ const routes = [
     children: [
       {
         path: '',
-        redirect: 'admin/accountsGroups'
+        redirect: 'admin/accountGroups'
       },
       {
         path: 'accountGroups',
@@ -56,6 +66,11 @@ const routes = [
       {
         path: 'business',
         component: AdminBusinessFinances
+      },
+      {
+        path: 'business/fiscalYear/detail/:id',
+        name: 'fiscalYearDetail',
+        component: AdminFiscalYearDetail
       },
       {
         path: 'import-export',

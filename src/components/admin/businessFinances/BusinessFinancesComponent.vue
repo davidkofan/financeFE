@@ -1,6 +1,8 @@
 <script setup>
-  //import { listAccountGroup, createAccountGroup, updateAccountGroup } from '@/resources/services/accountsBalanceServices';
+  import { listFinancialYear, createFinancialYear, updateFinancialYear, deleteFinancialYear } from '@/resources/services/businessFinancesServices';
+  import { generate24CharGUID } from '@/resources/globalFunctions';
   import CustomModal from '@/components/common/CustomModal.vue';
+  import { useRouter, useRoute } from 'vue-router';
 </script>
 
 <template>
@@ -17,13 +19,13 @@
                :title="data.name">
           <BCard-text>{{data.description}}</BCard-text>
           <BButtonGroup>
-            <BButton variant="warning" @click="">Správa doplatkov</BButton>
+            <BButton variant="success" @click="openFiscalYearDetail(data)">Správa fakturácií</BButton>
           </BButtonGroup>
 
           <template #footer>
             <BButtonGroup>
               <BButton variant="primary" @click="openMainFormModal(data,'edit')">Konfigurácia</BButton>
-              <BButton variant="danger">Odstránenie</BButton>
+              <BButton variant="danger" @click="openDeleteModal(data)">Odstránenie</BButton>
             </BButtonGroup>
           </template>
         </BCard>
@@ -33,13 +35,13 @@
     <BModal :title="mainFormModalConfig.mode === 'create' ? 'Pridať fiškálny rok' : 'Upraviť fiškálny rok'" v-model="mainFormModalConfig.show" noFooter @hidden="closeMainFormModal()">
       <BForm @submit.prevent="submitForm">
         <div class="row">
-          <BForm-group label="Názov" label-for="name">
+          <BFormGroup label="Názov" label-for="name">
             <BForm-input id="name" v-model="mainFormModalConfig.formData.name" required></BForm-input>
-          </BForm-group>
+          </BFormGroup>
 
-          <BForm-group label="Popis" label-for="description">
+          <BFormGroup label="Popis" label-for="description">
             <BForm-input id="description" v-model="mainFormModalConfig.formData.description"></BForm-input>
-          </BForm-group>
+          </BFormGroup>
         </div>
 
         <BButtonGroup class="mt-3">
@@ -73,9 +75,11 @@
     data() {
       return {
         state: 'unloaded',
-        mainFormModalConfig: { show: false },
+        mainFormModalConfig: { show: false, formData: {} },
         customModalConfig: null,
         fiscalYears: [],
+        router: useRouter(),
+        route: useRoute(),
       };
     },
     mounted() {
@@ -83,52 +87,66 @@
     },
     methods: {
       loadData() {
-        //mock data
-        this.fiscalYears = [
-          { id: '1', name: '2023' },
-          { id: '2', name: '2024' },
-          { id: '3', name: '2025' },
-          { id: '4', name: '2026' }
-        ];
-
-        this.state = "loaded";
-
-
-        //listAccountGroup()
-        //  .then((response) => {
-        //    this.accountGroups = response;
-        //    this.state = "loaded";
-        //  })
-        //  .catch(() => {
-        //    this.state = "error";
-        //  });
+        listFinancialYear()
+          .then((response) => {
+            this.fiscalYears = response;
+            this.state = "loaded";
+          })
+          .catch(() => {
+            this.state = "error";
+          });
 
       },
       submitForm() {
-        //if (this.mainFormModalConfig.mode === 'edit') {
-        //  this.updateAccountGroup();
-        //} else {
-        //  this.createAccountGroup();
-        //}
+        if (this.mainFormModalConfig.mode === 'edit') {
+          this.updateFinancialYear();
+        } else {
+          this.createFinancialYear();
+        }
       },
-      //createAccountGroup() {
-      //  const payload = {
-      //    ...this.mainFormModalConfig.formData,
-      //    id: this.generate24CharGUID()
-      //  };
-      //  createAccountGroup(payload)
-      //    .then(() => {
-      //      this.loadData();
-      //      this.closeModal();
-      //    })
-      //},
-      //updateAccountGroup() {
-      //  updateAccountGroup(this.mainFormModalConfig.formData.id, this.mainFormModalConfig.formData)
-      //    .then(() => {
-      //      this.loadData();
-      //      this.closeModal();
-      //    })
-      //},
+      createFinancialYear() {
+        const payload = {
+          ...this.mainFormModalConfig.formData,
+          id: generate24CharGUID()
+        };
+        createFinancialYear(payload)
+          .then(() => {
+            this.loadData();
+            this.closeMainFormModal();
+          })
+      },
+      updateFinancialYear() {
+        updateFinancialYear(this.mainFormModalConfig.formData.id, this.mainFormModalConfig.formData)
+          .then(() => {
+            this.loadData();
+            this.closeMainFormModal();
+          })
+      },
+      openDeleteModal(data) {
+        this.customModalConfig = {
+          title: 'Odstránenie fiškálneho roku',
+          text: `Naozaj chceš odstrániť fiškálny rok ${data.name}?`,
+          closeCallback: () => { this.customModalConfig = null; },
+          buttons: [
+            {
+              text: 'Odstrániť',
+              variant: 'btn-danger',
+              callback: () => {
+                deleteFinancialYear(data.id)
+                  .then(() => {
+                    this.loadData();
+                    this.customModalConfig = null;
+                  })
+              }
+            },
+            {
+              text: 'Zrušiť',
+              variant: 'btn-secondary',
+              callback: () => { this.customModalConfig = null; }
+            }
+          ]
+        };
+      },
       openMainFormModal(formData, mode) {
         Object.assign(this.mainFormModalConfig, {
           show: true,
@@ -142,14 +160,9 @@
           formData: {}
         });
       },
-      //generate24CharGUID() {
-      //  const chars = 'abcdef0123456789';
-      //  let guid = '';
-      //  for (let i = 0; i < 24; i++) {
-      //    guid += chars.charAt(Math.floor(Math.random() * chars.length));
-      //  }
-      //  return guid;
-      //},
+      openFiscalYearDetail(data) {
+        this.router.push({ name: 'fiscalYearDetail', params: { id: data.id } });
+      },
     },
   }
 </script>
