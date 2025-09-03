@@ -37,19 +37,21 @@
   <GlobalAlert />
 
   <BCard no-body>
-    <BTabs card v-model="activeTab">
-      <BTab title="Stavy účtov" key="accountGroups">
-        <router-view v-if="activeTab === 0" />
-      </BTab>
-      <BTab title="Živnosť" key="business">
-        <router-view v-if="activeTab === 1" />
-      </BTab>
-      <BTab title="Výdavky a príjmy" key="expensesAndIncome">
-        <router-view v-if="activeTab === 2" />
-      </BTab>
-      <BTab title="Správa dát" key="import-export">
-        <router-view v-if="activeTab === 3" />
-      </BTab>
+    <BTabs card v-model="activeTab" class="noTabContent">
+      <BTab title="Stavy účtov" />
+      <BTab title="Živnosť" />
+      <BTab title="Výdavky a príjmy" />
+      <BTab title="Správa dát" />
     </BTabs>
+
+    <div class="d-block p-2">
+      <router-view />
+    </div>
   </BCard>
 </template>
+
+<style>
+  .noTabContent .tab-content {
+    display: none;
+  }
+</style>

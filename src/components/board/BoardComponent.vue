@@ -36,17 +36,15 @@
     <NavMenu />
 
     <BCard no-body>
-      <BTabs card v-model="activeTab">
-        <BTab title="Stavy účtov" key="accountGroups">
-          <router-view v-if="activeTab === 0" />
-        </BTab>
-        <BTab title="Živnosť" key="business">
-          <router-view v-if="activeTab === 1" />
-        </BTab>
-        <BTab title="Výdavky a príjmy" key="expensesAndIncome">
-          <router-view v-if="activeTab === 2" />
-        </BTab>
+      <BTabs card v-model="activeTab" class="noTabContent">
+        <BTab title="Stavy účtov"></BTab>
+        <BTab title="Živnosť"> </BTab>
+        <BTab title="Výdavky a príjmy"></BTab>
       </BTabs>
+
+      <div class="d-block p-2">
+        <router-view />
+      </div>
     </BCard>
   </div>
 </template>

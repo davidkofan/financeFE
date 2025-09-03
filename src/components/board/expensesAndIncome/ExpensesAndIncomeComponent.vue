@@ -10,35 +10,38 @@
 <template>
   <!--STATE  loaded-->
   <template v-if="state == 'loaded'">
-    <h3 class="text-center">Výdavky</h3>
+    <h3>Výdavky</h3>
 
-    <div v-for="(groupData, index) in expensesData" :key="index">
-      <BRow class="my-2 d-flex justify-content-around">
-        <BCol cols="12" sm="6" xl="7">
-          <h5>{{groupData.name}}</h5>
+    <BRow>
+      <BCol cols="12" md="6" v-for="(groupData, index) in expensesData" :key="index">
+        <BRow class="my-2">
+          <BCol cols="12" md="6">
+            <h5>{{groupData.name}}</h5>
 
-          <BTable striped
-                  hover
-                  head-variant="dark"
-                  :items="groupData.expenses"
-                  :fields="fields"
-                  responsive
-                  foot-clone
-                  tfoot-tr-class="table-secondary">
-            <template #foot(name)>
-              <strong>Spolu</strong>
-            </template>
-            <template #foot(amount)>
-              <strong>{{ financeFormatter(sumGroup(groupData.expenses)) }}</strong>
-            </template>
-          </BTable>
-        </BCol>
+            <BTable striped
+                    hover
+                    head-variant="dark"
+                    :items="groupData.expenses"
+                    :fields="fields"
+                    responsive
+                    foot-clone
+                    tfoot-tr-class="table-success">
+              <template #foot(name)>
+                <strong>Celkom</strong>
+              </template>
+              <template #foot(amount)>
+                <strong>{{ financeFormatter(sumGroup(groupData.expenses)) }}</strong>
+              </template>
+            </BTable>
+          </BCol>
 
-        <BCol cols="12" sm="5" xl="3" class="my-2">
-          <Doughnut :data="buildPieChartData(groupData)" :options="chartOptions" class="h-100" />
-        </BCol>
-      </BRow>
-    </div>
+          <BCol cols="12" md="6" class="mt-2">
+            <Doughnut :data="buildPieChartData(groupData)" :options="chartOptions" class="h-100" />
+          </BCol>
+        </BRow>
+      </BCol>
+    </BRow>
+
   </template>
 
   <!--STATE  unloaded-->
