@@ -29,25 +29,24 @@
     <h4 class="mt-1 ms-1">Finančný portál</h4>
   </div>
 
-  <div class="d-flex justify-content-center ">
-
-    <div class="col-12 col-md-6 col-xl-4 mt-2 p-2">
+  <div class="d-flex justify-content-center mx-2">
+    <div class="col-12 col-md-6 col-xl-4 mt-3">
       <h2>Prihlásenie</h2>
 
-      <BForm @submit.prevent="login" class="p-3 border">
+      <BForm @submit.prevent="login" class="px-3 pt-2 border">
         <BFormGroup label="Meno" label-for="name" class="">
           <BForm-input id="name" v-model="name" required disabled></BForm-input>
         </BFormGroup>
 
-        <BFormGroup label="Heslo" label-for="password" class="">
+        <BFormGroup label="Heslo" label-for="password">
           <BForm-input id="password" v-model="password" required type="password"></BForm-input>
         </BFormGroup>
 
-        <h4 class="mt-3" v-if="errorMessage">
+        <h4 class="mt-3 mb-0" v-if="errorMessage">
           <b-badge variant="danger">{{ errorMessage }}</b-badge>
         </h4>
 
-        <BButtonGroup class="mt-2">
+        <BButtonGroup class="my-3">
           <BButton variant="success" type="submit">Prihlásiť</BButton>
         </BButtonGroup>
       </BForm>

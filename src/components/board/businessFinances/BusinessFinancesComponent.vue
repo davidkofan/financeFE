@@ -11,7 +11,7 @@
   <!--STATE  loaded-->
   <template v-if="state == 'loaded'">
     <h4>Sumár</h4>
-    <BTable striped hover head-variant="dark" :items="summaryData" :fields="summaryTableFields" responsive tbody-tr-class="table-success">
+    <BTable striped hover head-variant="dark" :items="summaryData" :fields="summaryTableFields" responsive :tbody-tr-class="summaryRowClass">
       <template #cell(year)="data">
         <strong>{{ data.value }}</strong>
       </template>
@@ -121,7 +121,7 @@
           },
           {
             key: 'incomePerMonth',
-            label: 'Príjem (mesiac)',
+            label: 'Príjem (mesačný priemer)',
             formatter: (val) => this.financeFormatter(val),
             class: 'text-center'
           },
@@ -151,7 +151,7 @@
           },
           {
             key: 'profitPerMonth',
-            label: 'Zisk (mesiac)',
+            label: 'Zisk (mesačný priemer)',
             formatter: (val) => this.financeFormatter(val),
             class: 'text-center'
           },
@@ -249,8 +249,14 @@
                 socialInsurance: totals.socialInsurance,
                 profit: profit,
                 profitPerMonth: profit / numberOfMonths,
+                incomeAssumption: financialYear.monthlyBalances.some(m => m.incomeAssumption),
+                taxAssumption: financialYear.monthlyBalances.some(m => m.taxAssumption),
+                healthInsuranceAssumption: financialYear.monthlyBalances.some(m => m.healthInsuranceAssumption),
+                socialInsuranceAssumption: financialYear.monthlyBalances.some(m => m.socialInsuranceAssumption),
                 total: true
               }
+
+              totalObj.assumption = totalObj.incomeAssumption || totalObj.taxAssumption || totalObj.healthInsuranceAssumption || totalObj.socialInsuranceAssumption;
 
               financialYear.monthlyBalances.push(totalObj);
 
@@ -264,6 +270,12 @@
             this.state = "error";
           });
       },
+      summaryRowClass(row) {
+        if (row.assumption) {
+          return 'table-danger';
+        }
+        return 'table-success';
+      },
       rowClass(row) {
         if (row.total) {
           return 'table-success';
@@ -275,6 +287,7 @@
       buildMonthlyIncomeChartData() {
         const labels = [];
         const income = [];
+        const profit = [];
 
         const sortedYears = [...this.financialYears].sort(
           (a, b) => a.financialYear.name - b.financialYear.name
@@ -288,7 +301,9 @@
           for (const mb of sortedBalances) {
             labels.push(`${mb.month}/${fy.financialYear.name}`);
             income.push(mb.income ?? 0);
+            profit.push(fy.monthlyBalances[fy.monthlyBalances.length - 1].profitPerMonth ?? 0);
           }
+
         }
 
         return {
@@ -298,6 +313,11 @@
               label: 'Príjem',
               data: income,
               borderColor: 'green',
+            },
+            {
+              label: 'Zisk (mesačný priemer)',
+              data: profit,
+              borderColor: 'blue',
             }
           ]
         };
@@ -321,7 +341,7 @@
           for (const mb of sortedBalances) {
             labels.push(`${mb.month}/${fy.financialYear.name}`);
 
-            tax.push(mb.tax ?? 0);
+            tax.push(fy.financialYear.additionalTax / sortedBalances.length);
             healthInsurance.push(mb.healthInsurance ?? 0);
             socialInsurance.push(mb.socialInsurance ?? 0);
           }
@@ -339,7 +359,12 @@
               label: 'Sociálne poistenie',
               data: socialInsurance,
               borderColor: 'purple',
-            }
+            },
+            {
+              label: 'Daň (mesačný priemer)',
+              data: tax,
+              borderColor: 'red',
+            },
           ]
         };
       },
@@ -372,11 +397,6 @@
           labels,
           datasets: [
             {
-              label: 'Daň',
-              data: this.summaryData.map(item => item.tax ?? 0),
-              borderColor: 'red',
-            },
-            {
               label: 'Zdravotné poistenie',
               data: this.summaryData.map(item => item.healthInsurance ?? 0),
               borderColor: 'orange',
@@ -385,7 +405,12 @@
               label: 'Sociálne poistenie',
               data: this.summaryData.map(item => item.socialInsurance ?? 0),
               borderColor: 'purple',
-            }
+            },
+            {
+              label: 'Daň',
+              data: this.summaryData.map(item => item.tax ?? 0),
+              borderColor: 'red',
+            },
           ]
         };
       }

@@ -5,6 +5,7 @@ import Login from '@/components/login/LoginComponent.vue';
 import Board from '@/components/board/BoardComponent.vue';
 import BoardAccountGroups from '@/components/board/accountsBalance/AccountGroupsComponent.vue';
 import BoardBusinessFinances from '@/components/board/businessFinances/BusinessFinancesComponent.vue';
+import BoardExpensesAndIncome from '@/components/board/expensesAndIncome/ExpensesAndIncomeComponent.vue';
 
 
 //admin
@@ -17,6 +18,10 @@ import AdminAccountGroupDetail from '@/components/admin/accountsBalance/AccountG
 //admin - business finances
 import AdminBusinessFinances from '@/components/admin/businessFinances/BusinessFinancesComponent.vue';
 import AdminFiscalYearDetail from '@/components/admin/businessFinances/FiscalYearDetailComponent.vue';
+
+//admin - expenses and income
+import AdminExpensesAndIncome from '@/components/admin/expensesAndIncome/ExpensesAndIncomeComponent.vue';
+import AdminExpenseGroupDetail from '@/components/admin/expensesAndIncome/ExpensesGroupdetailComponent.vue';
 
 //admin - import/export
 import AdminImportExport from '@/components/admin/importExport/ImportExportComponent.vue';
@@ -40,8 +45,13 @@ const routes = [
         path: 'accountGroups',
         component: BoardAccountGroups
       },
-      { path: 'business',
+      {
+        path: 'business',
         component: BoardBusinessFinances
+      },
+      {
+        path: 'expensesAndIncome',
+        component: BoardExpensesAndIncome
       },
     ]
   },
@@ -71,6 +81,15 @@ const routes = [
         path: 'business/fiscalYear/detail/:id',
         name: 'fiscalYearDetail',
         component: AdminFiscalYearDetail
+      },
+      {
+        path: 'expensesAndIncome',
+        component: AdminExpensesAndIncome
+      },
+      {
+        path: 'expensesGroup/detail/:id',
+        name: 'expensesGroupDetail',
+        component: AdminExpenseGroupDetail
       },
       {
         path: 'import-export',

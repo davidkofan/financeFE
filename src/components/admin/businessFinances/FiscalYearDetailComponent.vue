@@ -18,9 +18,9 @@
     <BCard header="Doplatky"
            header-tag="header">
       <BListGroup>
-        <BListGroupItem variant="dark">Daň: {{ `${Number(financialYear.additionalTax).toLocaleString('sk-SK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €` }}</BListGroupItem>
-        <BListGroupItem variant="dark">Zdravotné poistenie: {{ `${Number(financialYear.additionalHealthInsurance).toLocaleString('sk-SK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €` }}</BListGroupItem>
-        <BListGroupItem variant="dark">Sociálne poistenie: {{ `${Number(financialYear.additionalSocialInsurance).toLocaleString('sk-SK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €` }}</BListGroupItem>
+        <BListGroupItem variant="dark">Daň: {{ `${Number(financialYear.additionalTax).toLocaleString('sk-SK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €` }} {{ financialYear.additionalTaxAssumption ? '❓' : '' }}</BListGroupItem>
+        <BListGroupItem variant="dark">Zdravotné poistenie: {{ `${Number(financialYear.additionalHealthInsurance).toLocaleString('sk-SK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €` }} {{ financialYear.additionalHealthInsuranceAssumption ? '❓' : '' }}</BListGroupItem>
+        <BListGroupItem variant="dark">Sociálne poistenie: {{ `${Number(financialYear.additionalSocialInsurance).toLocaleString('sk-SK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €` }} {{ financialYear.additionalSocialInsuranceAssumption ? '❓' : '' }}</BListGroupItem>
       </BListGroup>
 
       <template #footer>
@@ -41,10 +41,10 @@
                :title="monthOptions.find(month => month.value == data.month).text">
 
           <BListGroup>
-            <BListGroupItem variant="success">Príjem: {{ `${Number(data.income).toLocaleString('sk-SK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €` }}</BListGroupItem>
-            <BListGroupItem variant="dark">Daň: {{ `${Number(data.tax).toLocaleString('sk-SK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €` }}</BListGroupItem>
-            <BListGroupItem variant="dark">Zdravotné poistenie: {{ `${Number(data.healthInsurance).toLocaleString('sk-SK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €` }}</BListGroupItem>
-            <BListGroupItem variant="dark">Sociálne poistenie: {{ `${Number(data.socialInsurance).toLocaleString('sk-SK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €` }}</BListGroupItem>
+            <BListGroupItem variant="success">Príjem: {{ `${Number(data.income).toLocaleString('sk-SK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €` }} {{ data.incomeAssumption ? '❓' : '' }}</BListGroupItem>
+            <BListGroupItem variant="dark">Daň: {{ `${Number(data.tax).toLocaleString('sk-SK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €` }} {{ data.taxAssumption ? '❓' : '' }}</BListGroupItem>
+            <BListGroupItem variant="dark">Zdravotné poistenie: {{ `${Number(data.healthInsurance).toLocaleString('sk-SK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €` }} {{ data.healthInsuranceAssumption ? '❓' : '' }}</BListGroupItem>
+            <BListGroupItem variant="dark">Sociálne poistenie: {{ `${Number(data.socialInsurance).toLocaleString('sk-SK', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €` }} {{ data.socialInsuranceAssumption ? '❓' : '' }}</BListGroupItem>
           </BListGroup>
 
           <BButtonGroup class="mt-3">
