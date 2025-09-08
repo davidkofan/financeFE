@@ -10,10 +10,24 @@
 <template>
   <!--STATE  loaded-->
   <template v-if="state == 'loaded'">
-    <div v-for="(group, index) in groups" :key="index">
 
-      <template v-if="group.accounts.length">
-        <h4>{{ group.name }} - {{ group.table?.actual?.toLocaleString('sk-SK') ?? '0' }} €</h4>
+    <b-row class="mb-2">
+      <b-col cols="12" md="3" v-for="(group, index) in accountGroupsActuals" :key="index">
+        <b-card :bg-variant="group.variant"
+                text-variant="white"
+                :header="group.name"
+                class="text-center mb-2">
+          <b-card-text>
+            <h3>{{ group.value?.toLocaleString('sk-SK') ?? '0' }} €</h3>
+          </b-card-text>
+        </b-card>
+      </b-col>
+    </b-row>
+
+    <template v-for="(group, index) in groups">
+
+      <div v-if="group.accounts.length" :key="index">
+        <h4>{{ group.name }}</h4>
         <div class="mb-1">{{group.description}}</div>
 
         <b-row>
@@ -34,9 +48,9 @@
             </div>
           </b-col>
         </b-row>
-      </template>
+      </div>
 
-    </div>
+    </template>
   </template>
 
   <!--STATE  unloaded-->
@@ -60,6 +74,7 @@
       return {
         state: 'unloaded',
         groups: [],
+        accountGroupsActuals: [],
         chartOptions: {
           responsive: true,
           plugins: {
@@ -68,6 +83,7 @@
             }
           }
         },
+        variants: ['success', 'info', 'danger', 'warning', 'dark', 'primary', 'info', 'warning']
       };
     },
     mounted() {
@@ -83,6 +99,12 @@
                 group.chartData = this.getChartData(group.accounts);
               }
             }
+
+            this.accountGroupsActuals = groups.map((g, index) => ({
+              name: g.name,
+              value: g.accounts.length ? g.table.actual : 0,
+              variant: this.variants[index % this.variants.length]
+            }));
 
             this.groups = groups;
             this.state = "loaded";

@@ -11,10 +11,10 @@ const api = axios.create({
   },
 });
 
-// Pridáme interceptor na každý požiadavok, ktorý automaticky pridá token z sessionStorage
+// Pridáme interceptor na každý požiadavok, ktorý automaticky pridá token z localStorage
 api.interceptors.request.use(
   (config) => {
-    const token = sessionStorage.getItem("userToken");
+    const token = localStorage.getItem("userToken");
     if (token) {
       //config.headers['Authorization'] = `Bearer ${token}`; // Pridáme token do Authorization hlavičky
     }
@@ -32,7 +32,7 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-      sessionStorage.removeItem("userToken");
+      localStorage.removeItem("userToken");
       window.location.href = "/login";
       return Promise.reject(error);
     }

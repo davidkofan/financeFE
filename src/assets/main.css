@@ -61,6 +61,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.row {
+  --bs-gutter-x: 1rem !important;
+}
 
 .table-responsive th, .table-responsive td {
   font-size: 0.8rem !important;
@@ -87,7 +90,7 @@ body {
 
   .wide .row, .wide .row * {
     padding-inline: 0;
-    margin-inline: 0 ;
+    margin-inline: 0;
   }
 
   .table-responsive th {

@@ -1,0 +1,15 @@
+{
+  "short_name": "Finance",
+  "name": "Finance",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "https://finkuzfan.online",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

@@ -10,8 +10,8 @@
       const customModalConfig = ref(null);
      
       const logout = () => {
-        sessionStorage.removeItem('userToken');
-        router.push('/');
+        localStorage.removeItem('userToken');
+        router.push('/login');
       };
 
       const onCloseCustomModal = () => {

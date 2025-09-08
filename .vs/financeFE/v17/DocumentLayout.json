@@ -3,12 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\fanco\\source\\repos\\financeFE\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\components\\board\\expensesandincome\\expensesandincomecomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\components\\board\\expensesandincome\\expensesandincomecomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\components\\board\\accountsbalance\\accountgroupscomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\components\\board\\accountsbalance\\accountgroupscomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\main.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\main.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\components\\board\\businessfinances\\businessfinancescomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\components\\board\\businessfinances\\businessfinancescomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|c:\\users\\fanco\\source\\repos\\financefe\\src\\components\\board\\expensesandincome\\expensesandincomecomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{43662BF1-7BAF-4C75-995B-134A850BF256}|financefe.esproj|solutionrelative:src\\components\\board\\expensesandincome\\expensesandincomecomponent.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 174,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -43,27 +51,52 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "main.js",
+              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\main.js",
+              "RelativeDocumentMoniker": "src\\main.js",
+              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\main.js",
+              "RelativeToolTip": "src\\main.js",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAA0AAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-09-08T08:43:26.223Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "BusinessFinancesComponent.vue",
               "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\board\\businessFinances\\BusinessFinancesComponent.vue",
               "RelativeDocumentMoniker": "src\\components\\board\\businessFinances\\BusinessFinancesComponent.vue",
               "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\board\\businessFinances\\BusinessFinancesComponent.vue",
               "RelativeToolTip": "src\\components\\board\\businessFinances\\BusinessFinancesComponent.vue",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAACkAAABHAAAAAAAAAA==",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAAAA4AAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-09-03T11:42:13.774Z"
+              "WhenOpened": "2025-09-05T08:32:12.468Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "AccountGroupsComponent.vue",
+              "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\board\\accountsBalance\\AccountGroupsComponent.vue",
+              "RelativeDocumentMoniker": "src\\components\\board\\accountsBalance\\AccountGroupsComponent.vue",
+              "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\board\\accountsBalance\\AccountGroupsComponent.vue",
+              "RelativeToolTip": "src\\components\\board\\accountsBalance\\AccountGroupsComponent.vue",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAAABQAAABHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-09-05T08:08:00.822Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "ExpensesAndIncomeComponent.vue",
               "DocumentMoniker": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\board\\expensesAndIncome\\ExpensesAndIncomeComponent.vue",
               "RelativeDocumentMoniker": "src\\components\\board\\expensesAndIncome\\ExpensesAndIncomeComponent.vue",
               "ToolTip": "C:\\Users\\fanco\\source\\repos\\financeFE\\src\\components\\board\\expensesAndIncome\\ExpensesAndIncomeComponent.vue",
               "RelativeToolTip": "src\\components\\board\\expensesAndIncome\\ExpensesAndIncomeComponent.vue",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAABsAAAAxAAAAAAAAAA==",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAAACEAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-09-03T11:34:18.876Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-05T08:07:58.532Z"
             }
           ]
         },

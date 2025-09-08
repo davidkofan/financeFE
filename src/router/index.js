@@ -28,7 +28,11 @@ import AdminImportExport from '@/components/admin/importExport/ImportExportCompo
 
 const routes = [
   {
-    path: '/',
+    path: '',
+    redirect: '/board'
+  },
+  {
+    path: '/login',
     name: 'login',
     component: Login,
   },
@@ -106,7 +110,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  const token = sessionStorage.getItem('userToken');
+  const token = localStorage.getItem('userToken');
 
   if (requiresAuth && !token) {
     next({ name: 'login' });

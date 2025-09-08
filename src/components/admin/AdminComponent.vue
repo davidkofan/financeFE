@@ -10,8 +10,8 @@
   const router = useRouter()
 
   // Zoznam tabov a mapovanie na indexy
-  const routeToIndex = { accountGroups: 0, business: 1, expensesAndIncome: 2, 'import-export': 3 }
-  const indexToRoute = ['accountGroups', 'business', 'expensesAndIncome', 'import-export']
+  const routeToIndex = { accountGroups: 0, expensesAndIncome: 1, business: 2, 'import-export': 3 }
+  const indexToRoute = ['accountGroups', 'expensesAndIncome', 'business', 'import-export']
 
   // Aktívny tab (index)
   const activeTab = ref(routeToIndex[route.path.split('/')[2]] ?? 0)
@@ -39,9 +39,9 @@
   <BCard no-body>
     <BTabs card v-model="activeTab" class="noTabContent">
       <BTab title="Stavy účtov" />
-      <BTab title="Živnosť" />
       <BTab title="Výdavky a príjmy" />
-      <BTab title="Správa dát" />
+      <BTab title="Živnosť" />
+      <!--<BTab title="Správa dát" />-->
     </BTabs>
 
     <div class="d-block p-2">

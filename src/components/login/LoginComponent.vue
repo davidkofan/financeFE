@@ -12,7 +12,7 @@
       const login = async () => {
         if (password.value === 'finance') {
           router.push('/board');
-          sessionStorage.setItem('userToken', 'd5sfsd165scs6dc5');
+          localStorage.setItem('userToken', 'd5sfsd165scs6dc5');
 
         } else {
           errorMessage.value = 'Nesprávne heslo';

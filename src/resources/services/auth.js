@@ -10,7 +10,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = sessionStorage.getItem("userToken");
+    const token = localStorage.getItem("userToken");
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -32,9 +32,8 @@ export async function loginUser(username, password) {
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || 'Login failed');
 
-    sessionStorage.setItem('userToken', data.token);
-    sessionStorage.setItem('username', data.userData.username);
-    sessionStorage.setItem('readOnlyMode', data.userData.readOnlyMode);
+    localStorage.setItem('userToken', data.token);
+    localStorage.setItem('username', data.userData.username);
 
     return { success: true };
   } catch (error) {
@@ -43,11 +42,11 @@ export async function loginUser(username, password) {
 }
 
 export function logoutUser() {
-  sessionStorage.removeItem('userToken');
+  localStorage.removeItem('userToken');
 }
 
 export async function isAuthenticated() {
-  const token = sessionStorage.getItem('userToken');
+  const token = localStorage.getItem('userToken');
   if (!token) return false;
 
   try {
@@ -56,7 +55,7 @@ export async function isAuthenticated() {
     return false;
   } catch (error) {
     console.log(error);
-    sessionStorage.removeItem('userToken');
+    localStorage.removeItem('userToken');
     return false;
   }
 }

@@ -10,13 +10,42 @@
 <template>
   <!--STATE  loaded-->
   <template v-if="state == 'loaded'">
+
+    <b-row class="my-2">
+      <b-col cols="12" md="3" v-for="(expense,index) in expensesData" :key="index">
+        <b-card bg-variant="danger"
+                text-variant="white"
+                :header="expense.name"
+                class="text-center mb-2">
+          <b-card-text>
+            <h3>{{ financeFormatter(sumGroup(expense.expenses)) }}</h3>
+          </b-card-text>
+        </b-card>
+      </b-col>
+    </b-row>
+
+    <b-row class="my-2">
+      <b-col cols="12" md="3">
+        <b-card bg-variant="success"
+                text-variant="white"
+                header="prijem example"
+                class="text-center mb-2">
+          <b-card-text>
+            <h3>coming soon...</h3>
+          </b-card-text>
+        </b-card>
+      </b-col>
+    </b-row>
+
+    <div class="border border-1 w-100 my-2"></div>
+
     <h3>Výdavky</h3>
 
     <BRow>
       <BCol cols="12" md="6" v-for="(groupData, index) in expensesData" :key="index">
         <BRow class="my-2">
           <BCol cols="12" md="6">
-            <h5>{{groupData.name}}</h5>
+            <h4>{{groupData.name}}</h4>
 
             <BTable striped
                     hover
@@ -41,6 +70,10 @@
         </BRow>
       </BCol>
     </BRow>
+
+    <div class="border border-1 w-100 my-2"></div>
+    <h3>Príjmy</h3>
+    <span>coming soon...</span>
 
   </template>
 

@@ -10,14 +10,26 @@
 <template>
   <!--STATE  loaded-->
   <template v-if="state == 'loaded'">
-    <h4>Sumár</h4>
+    <b-row class="mb-2">
+      <b-col cols="12" md="3" v-for="(year, index) in summaryData" :key="index">
+        <b-card :bg-variant="year.assumption ? 'danger' :'success'"
+                text-variant="white"
+                :header="year.year"
+                class="text-center mb-2">
+          <b-card-text>
+            <h3>{{financeFormatter(year.income) }}</h3>
+          </b-card-text>
+        </b-card>
+      </b-col>
+    </b-row>
+
     <BTable striped hover head-variant="dark" :items="summaryData" :fields="summaryTableFields" responsive :tbody-tr-class="summaryRowClass">
       <template #cell(year)="data">
         <strong>{{ data.value }}</strong>
       </template>
     </BTable>
 
-    <BRow class="my-5">
+    <BRow class="mb-5">
       <BCol cols="12" md="6">
         <h5>Ročné príjmy</h5>
         <Line :data="buildSummaryIncomeChartData()" :options="chartOptions" class="h-100" />
