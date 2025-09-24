@@ -88,7 +88,7 @@ body {
     padding-inline: 4px;
   }
 
-  .wide .row, .wide .row * {
+  .wide .row, .wide .row div {
     padding-inline: 0;
     margin-inline: 0;
   }

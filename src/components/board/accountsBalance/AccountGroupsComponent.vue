@@ -4,8 +4,7 @@
   import { Line } from 'vue-chartjs';
   import ChartJS from 'chart.js/auto';
   import { CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
-  ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend);
-</script>
+  ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend);</script>
 
 <template>
   <!--STATE  loaded-->
@@ -32,14 +31,45 @@
 
         <b-row>
           <b-col cols="12" md="6">
-            <BTable striped hover head-variant="dark" :items="group.table.rows" :fields="group.table.columns" responsive>
+            <BTable striped hover head-variant="dark"
+                    :items="group.table.rows"
+                    :fields="group.table.columns"
+                    :per-page="group.table.perPage"
+                    :current-page="group.table.currentPage"
+                    responsive>
               <template #cell(period)="data">
                 <strong>{{ data.value }}</strong>
               </template>
               <template #cell(sum)="data">
                 <strong>{{ data.value }}</strong>
               </template>
+              <template #cell(diff)="data">
+                <span class="text-primary" v-if="data.item.expectation"> {{data.value}} </span>
+                <span v-else :class="data.unformatted < 0 ? 'text-danger' : 'text-success'"> {{data.value}} </span>
+              </template>
             </BTable>
+
+            <!-- Ovládanie stránkovania -->
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <span></span>
+
+              <!-- Pagination -->
+              <b-pagination v-model="group.table.currentPage"
+                            :total-rows="group.table.rows.length"
+                            :per-page="group.table.perPage"
+                            align="right"
+                            size="md"
+                            class="my-0" />
+
+              <!-- Výber počtu záznamov -->
+              <b-form-group class="mb-0">
+                <b-form-select id="perPageSelect"
+                               v-model="group.table.perPage"
+                               :options="group.table.perPageOptions"
+                               size="md" />
+              </b-form-group>
+            </div>
+
           </b-col>
           <b-col cols="12" md="6">
             <div class="ratio mb-5 mb-md-0 mt-2 mt-md-0 lineContainer">
@@ -95,8 +125,9 @@
           .then((groups) => {
             for (let group of groups) {
               if (group.accounts.length) {
-                group.table = this.getTable(group.accounts);
-                group.chartData = this.getChartData(group.accounts);
+                group.table = this.getTable(group.accounts, group.expectedIncreases);
+                group.chartData = this.getChartData(group.accounts, group.expectedIncreases);
+
               }
             }
 
@@ -132,8 +163,10 @@
 
         return Array.from(periods).sort();
       },
-      getTable(accounts) {
-        const periods = this.getUniquePeriods(accounts);
+      getTable(accounts, expectedIncreases) {
+        const periods = this.getUniquePeriods([...accounts, { balances: expectedIncreases }]);
+
+        let prevSum = null;
 
         const rows = periods.map(key => {
           const [year, month] = key.split("-").map(Number);
@@ -148,14 +181,31 @@
             sum += value;
           });
 
-          row.sum = sum;
+
+          if (sum) {
+            row.diff = prevSum !== null ? sum - prevSum : null; // rozdiel oproti predchádzajúcemu mesiacu
+            row.sum = sum;
+          }
+          else {
+            const expectedIncrease = expectedIncreases.find(inc => inc.year === year && inc.month === month);
+            if (expectedIncrease) {
+              row.diff = expectedIncrease.amount; // rozdiel oproti predchádzajúcemu mesiacu
+              row.sum = expectedIncrease.amount + prevSum;
+              row.expectation = true;
+
+              sum = expectedIncrease.amount + prevSum;
+            }
+          }
+
+          prevSum = sum;
+
           return row;
-        })
+        });
 
         const columns = accounts.map(acc => ({
           key: acc.id,
           label: acc.name + (acc.description ? ` (${acc.description})` : ''),
-          formatter: (value) => `${value.toLocaleString()} €`,
+          formatter: (value) => value ? `${value.toLocaleString()} €` : '-',
           class: 'text-center'
         }));
 
@@ -166,15 +216,35 @@
             label: 'Spolu',
             formatter: (value) => `${value.toLocaleString()} €`,
             class: 'text-center'
+          },
+          {
+            key: 'diff',
+            label: 'Prírastok',
+            formatter: (value) =>
+              value === null ? '-' : `${value >= 0 ? '+' : ''}${value.toLocaleString()} €`,
+            class: 'text-center'
           }
         );
 
-        const actual = rows[rows.length - 1].sum;
+        const actualRow = [...rows].reverse().find(r => !r.expectation);
+        const actual = actualRow ? actualRow.sum : 0;
 
-        return { rows, columns, actual };
+        // výpočet celkového počtu strán
+        const perPage = 10;
+        const totalPages = Math.ceil(rows.length / perPage);
+
+        return {
+          rows,
+          columns,
+          actual,
+          perPage,
+          currentPage: totalPages || 1, // nastaviť na poslednú stranu
+          perPageOptions: [5, 10, 20, 50]
+        };
       },
-      getChartData(accounts) {
-        const labels = this.getUniquePeriods(accounts);
+
+      getChartData(accounts, expectedIncreases = []) {
+        const labels = this.getUniquePeriods([...accounts, { balances: expectedIncreases }]);
 
         // Dataset pre každý účet
         const datasets = accounts.map((account, i) => {
@@ -183,7 +253,7 @@
             const balance = account.balances.find(
               b => b.year == year && b.month == Number(month)
             );
-            return balance?.amount ?? 0;
+            return balance?.amount ?? null;
           });
 
           return {
@@ -195,24 +265,55 @@
         });
 
         // Dataset pre súčet všetkých účtov
-        const sumData = labels.map(label => {
-          const [year, month] = label.split("-");
-          return accounts.reduce((sum, account) => {
-            const balance = account.balances.find(
-              b => b.year == year && b.month == Number(month)
-            );
-            return sum + (balance?.amount ?? 0);
+        let prevSum = null;
+        const sumReal = [];
+        const sumPred = [];
+
+        labels.forEach(label => {
+          const [year, month] = label.split("-").map(Number);
+
+          // reálne sumy
+          let sum = accounts.reduce((s, acc) => {
+            const balance = acc.balances.find(b => b.year === year && b.month === month);
+            return s + (balance?.amount ?? 0);
           }, 0);
+
+          if (sum > 0) {
+            sumReal.push(sum);
+            sumPred.push(null);
+            prevSum = sum;
+          } else {
+            // ak nie je reálna hodnota, použijeme očakávaný nárast
+            const exp = expectedIncreases.find(e => e.year === year && e.month === month);
+            if (exp && prevSum !== null) {
+              const predicted = prevSum + exp.amount;
+              sumReal.push(null);
+              sumPred.push(predicted);
+              prevSum = predicted;
+            } else {
+              sumReal.push(null);
+              sumPred.push(null);
+            }
+          }
         });
 
-        datasets.push({
-          label: 'Súčet',
-          data: sumData,
-          borderColor: 'black',
-          backgroundColor: 'black',
-          borderWidth: 3,
-          tension: 0.2,
-        });
+        datasets.push(
+          {
+            label: 'Súčet (reálne)',
+            data: sumReal,
+            borderColor: 'black',
+            borderWidth: 3,
+            tension: 0.2,
+          },
+          {
+            label: 'Súčet (predpoklad)',
+            data: sumPred,
+            borderColor: 'black',
+            borderWidth: 3,
+            borderDash: [5, 5],
+            tension: 0.2,
+          }
+        );
 
         const formattedLabels = labels.map(p => {
           const [y, m] = p.split("-");

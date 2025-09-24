@@ -1,6 +1,7 @@
 <script setup>
   import { listAccountGroup, createAccountGroup, updateAccountGroup, deleteAccountGroup } from '@/resources/services/accountsBalanceServices';
   import { generate24CharGUID } from '@/resources/globalFunctions';
+  import ExpectedIncreases from '@/components/admin/accountsBalance/ExpectedIncreases.vue';
   import CustomModal from '@/components/common/CustomModal.vue';
   import { useRouter, useRoute } from 'vue-router';
 </script>
@@ -9,7 +10,7 @@
   <!-- STATE  loaded-->
   <template v-if="state == 'loaded'">
     <BButtonGroup class="mb-2">
-      <BButton variant="dark" @click="openMainFormModal({}, 'create')">Pridať skupinu účtov</BButton>
+      <BButton variant="dark" @click="openModal({},'mainForm', 'create')">Pridať skupinu účtov</BButton>
     </BButtonGroup>
 
     <b-row>
@@ -20,11 +21,12 @@
           <BCard-text>{{data.description}}</BCard-text>
           <BButtonGroup>
             <BButton variant="success" @click="openAccountsGroupDetail(data)">Správa účtov</BButton>
+            <BButton variant="outline-success" @click="openModal(data, 'expectedIncreases', 'edit')">Správa predpokladov</BButton>
           </BButtonGroup>
 
           <template #footer>
             <BButtonGroup>
-              <BButton variant="primary" @click="openMainFormModal(data, 'edit')">Konfigurácia</BButton>
+              <BButton variant="primary" @click="openModal(data,'mainForm', 'edit')">Konfigurácia</BButton>
               <BButton variant="danger" @click="openDeleteModal(data)">Odstránenie</BButton>
             </BButtonGroup>
           </template>
@@ -32,24 +34,33 @@
       </b-col>
     </b-row>
 
-    <BModal :title="mainFormModalConfig.mode === 'create' ? 'Pridať skupinu účtov' : 'Upraviť skupinu účtov'" v-model="mainFormModalConfig.show" noFooter @hidden="closeMainFormModal()">
-      <BForm @submit.prevent="submitForm">
-        <div class="row">
-          <BFormGroup label="Názov" label-for="name">
-            <BForm-input id="name" v-model="mainFormModalConfig.formData.name" required></BForm-input>
-          </BFormGroup>
+    <template v-if="modalConfig.modalType === 'mainForm'">
+      <BModal :title="modalConfig.mode === 'create' ? 'Pridať skupinu účtov' : 'Upraviť skupinu účtov'" v-model="modalConfig.show" noFooter @hidden="closeModal()">
+        <BForm @submit.prevent="submitForm">
+          <div class="row">
+            <BFormGroup label="Názov" label-for="name">
+              <BForm-input id="name" v-model="modalConfig.formData.name" required></BForm-input>
+            </BFormGroup>
 
-          <BFormGroup label="Popis" label-for="description">
-            <BFormTextarea id="description" v-model="mainFormModalConfig.formData.description" rows="3"></BFormTextarea>
-          </BFormGroup>
-        </div>
+            <BFormGroup label="Popis" label-for="description">
+              <BFormTextarea id="description" v-model="modalConfig.formData.description" rows="3"></BFormTextarea>
+            </BFormGroup>
+          </div>
 
-        <BButtonGroup class="mt-3">
-          <BButton variant="success" type="submit">Uložiť</BButton>
-          <BButton variant="danger" @click="closeMainFormModal()">Zrušiť</BButton>
-        </BButtonGroup>
-      </BForm>
-    </BModal>
+          <BButtonGroup class="mt-3">
+            <BButton variant="success" type="submit">Uložiť</BButton>
+            <BButton variant="danger" @click="closeModal()">Zrušiť</BButton>
+          </BButtonGroup>
+        </BForm>
+      </BModal>
+    </template>
+
+    <template v-if="modalConfig.modalType === 'expectedIncreases'">
+      <BModal title="Správa predpokladaných príjmov" v-model="modalConfig.show" noFooter size="lg" @hidden="closeModal()">
+        <ExpectedIncreases :groupId="modalConfig.formData.id"></ExpectedIncreases>
+      </BModal>
+    </template>
+
   </template>
 
   <!--STATE  unloaded-->
@@ -75,7 +86,7 @@
     data() {
       return {
         state: 'unloaded',
-        mainFormModalConfig: { show: false, formData: {} },
+        modalConfig: { show: false, formData: {} },
         customModalConfig: null,
         accountGroups: [],
         router: useRouter(),
@@ -98,7 +109,7 @@
 
       },
       submitForm() {
-        if (this.mainFormModalConfig.mode === 'edit') {
+        if (this.modalConfig.mode === 'edit') {
           this.updateAccountGroup();
         } else {
           this.createAccountGroup();
@@ -106,20 +117,20 @@
       },
       createAccountGroup() {
         const payload = {
-          ...this.mainFormModalConfig.formData,
+          ...this.modalConfig.formData,
           id: generate24CharGUID()
         };
         createAccountGroup(payload)
           .then(() => {
             this.loadData();
-            this.closeMainFormModal();
+            this.closeModal();
           })
       },
       updateAccountGroup() {
-        updateAccountGroup(this.mainFormModalConfig.formData.id, this.mainFormModalConfig.formData)
+        updateAccountGroup(this.modalConfig.formData.id, this.modalConfig.formData)
           .then(() => {
             this.loadData();
-            this.closeMainFormModal();
+            this.closeModal();
           })
       },
       openDeleteModal(data) {
@@ -147,15 +158,16 @@
           ]
         };
       },
-      openMainFormModal(formData, mode) {
-        Object.assign(this.mainFormModalConfig, {
+      openModal(formData, modalType, mode) {
+        Object.assign(this.modalConfig, {
           show: true,
           formData: { ...formData },
+          modalType,
           mode
         });
       },
-      closeMainFormModal() {
-        Object.assign(this.mainFormModalConfig, {
+      closeModal() {
+        Object.assign(this.modalConfig, {
           show: false,
           formData: {}
         });

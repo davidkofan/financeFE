@@ -11,7 +11,7 @@ import 'v-calendar/style.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
 
-import { BListGroup, BListGroupItem, BAccordion, BAccordionItem, BImg, BCarousel, BCarouselSlide, BTab, BTabs, BFormFile, BNav, BNavItem, BCol, BRow, BDropdown, BDropdownItem, BCollapse, BTable, BTh, BTr, BTd, BSpinner, BBadge, BCard, BCardImg, BCardHeader, BCardBody, BCardText, BCardGroup, BForm, BFormGroup, BFormInput, BFormSelect, BFormCheckbox, BButton, BButtonGroup, BFormTextarea, BModal, BOffcanvas, BAlert } from 'bootstrap-vue-next'
+import { BPagination, BListGroup, BListGroupItem, BAccordion, BAccordionItem, BImg, BCarousel, BCarouselSlide, BTab, BTabs, BFormFile, BNav, BNavItem, BCol, BRow, BDropdown, BDropdownItem, BCollapse, BTable, BTh, BTr, BTd, BSpinner, BBadge, BCard, BCardImg, BCardHeader, BCardBody, BCardText, BCardGroup, BForm, BFormGroup, BFormInput, BFormSelect, BFormCheckbox, BButton, BButtonGroup, BFormTextarea, BModal, BOffcanvas, BAlert } from 'bootstrap-vue-next'
 const app = createApp(App)
 
 import { createBootstrap } from 'bootstrap-vue-next/plugins/createBootstrap';
@@ -22,6 +22,7 @@ app.use(createPinia())
 app.use(VCalendar, {})
 app.use(router)
 
+app.component('BPagination', BPagination)
 app.component('BListGroup', BListGroup)
 app.component('BListGroupItem', BListGroupItem)
 app.component('BAccordion', BAccordion)

@@ -1,15 +1,21 @@
 <script setup>
-  import { listExpensesGroup,createExpensesGroup, updateExpensesGroup, deleteExpensesGroup } from '@/resources/services/expensesAndIncomeServices';
+  import {
+    listExpensesGroup, createExpensesGroup, updateExpensesGroup, deleteExpensesGroup,
+    listIncomesGroup, createIncomesGroup, updateIncomesGroup, deleteIncomesGroup
+  } from '@/resources/services/expensesAndIncomeServices';
+
   import { generate24CharGUID } from '@/resources/globalFunctions';
   import CustomModal from '@/components/common/CustomModal.vue';
-  import { useRouter, useRoute } from 'vue-router';
+  import { useRouter } from 'vue-router';
 </script>
 
 <template>
-  <!-- STATE  loaded-->
+  <!-- STATE  loaded -->
   <template v-if="state == 'loaded'">
+    <!-- Výdavky -->
+    <h3 class="mb-3">Skupiny výdavkov</h3>
     <BButtonGroup class="mb-2">
-      <BButton variant="dark" @click="openMainFormModal({}, 'create')">Pridať skupinu výdavkov</BButton>
+      <BButton variant="dark" @click="openMainFormModal({}, 'create', 'expense')">Pridať skupinu výdavkov</BButton>
     </BButtonGroup>
 
     <b-row>
@@ -19,30 +25,60 @@
                :title="data.name">
           <BCard-text>{{data.description}}</BCard-text>
           <BButtonGroup>
-            <BButton variant="success" @click="openExpensesGroupDetail(data)">Správa výdavkov</BButton>
+            <BButton variant="success" @click="openGroupDetail(data, 'expense')">Správa výdavkov</BButton>
           </BButtonGroup>
-
           <template #footer>
             <BButtonGroup>
-              <BButton variant="primary" @click="openMainFormModal(data,'edit')">Konfigurácia</BButton>
-              <BButton variant="danger" @click="openDeleteModal(data)">Odstránenie</BButton>
+              <BButton variant="primary" @click="openMainFormModal(data,'edit','expense')">Konfigurácia</BButton>
+              <BButton variant="danger" @click="openDeleteModal(data,'expense')">Odstránenie</BButton>
             </BButtonGroup>
           </template>
         </BCard>
       </b-col>
     </b-row>
 
-    <BModal :title="mainFormModalConfig.mode === 'create' ? 'Pridať skupinu výdavkov' : 'Upraviť skupinu výdavkov'" v-model="mainFormModalConfig.show" noFooter @hidden="closeMainFormModal()">
-      <BForm @submit.prevent="submitForm">
-        <div class="row">
-          <BFormGroup label="Názov" label-for="name">
-            <BForm-input id="name" v-model="mainFormModalConfig.formData.name" required></BForm-input>
-          </BFormGroup>
+    <hr class="my-5" />
 
-          <BFormGroup label="Popis" label-for="description">
-            <BForm-input id="description" v-model="mainFormModalConfig.formData.description"></BForm-input>
-          </BFormGroup>
-        </div>
+    <!-- Príjmy -->
+    <h3 class="mb-3">Skupiny príjmov</h3>
+    <BButtonGroup class="mb-2">
+      <BButton variant="dark" @click="openMainFormModal({}, 'create', 'income')">Pridať skupinu príjmov</BButton>
+    </BButtonGroup>
+
+    <b-row>
+      <b-col cols="12" xl="4" v-for="(data, index) in incomesGroups" :key="index" class="mb-4">
+        <BCard :header="'Skupina príjmov č.' + (index + 1)"
+               header-tag="header"
+               :title="data.name">
+          <BCard-text>{{data.description}}</BCard-text>
+          <BButtonGroup>
+            <BButton variant="success" @click="openGroupDetail(data, 'income')">Správa príjmov</BButton>
+          </BButtonGroup>
+          <template #footer>
+            <BButtonGroup>
+              <BButton variant="primary" @click="openMainFormModal(data,'edit','income')">Konfigurácia</BButton>
+              <BButton variant="danger" @click="openDeleteModal(data,'income')">Odstránenie</BButton>
+            </BButtonGroup>
+          </template>
+        </BCard>
+      </b-col>
+    </b-row>
+
+    <!-- Modal pre expenses aj incomes -->
+    <BModal :title="mainFormModalConfig.mode === 'create'
+                ? (mainFormModalConfig.type === 'expense' ? 'Pridať skupinu výdavkov' : 'Pridať skupinu príjmov')
+                : (mainFormModalConfig.type === 'expense' ? 'Upraviť skupinu výdavkov' : 'Upraviť skupinu príjmov')"
+            v-model="mainFormModalConfig.show" noFooter
+            @hidden="closeMainFormModal()">
+
+      <BForm @submit.prevent="submitForm">
+        <BFormGroup label="Názov">
+          <BForm-input v-model="mainFormModalConfig.formData.name" required />
+        </BFormGroup>
+
+        <BFormGroup label="Popis">
+          <BForm-input v-model="mainFormModalConfig.formData.description" />
+        </BFormGroup>
 
         <BButtonGroup class="mt-3">
           <BButton variant="success" type="submit">Uložiť</BButton>
@@ -52,22 +88,22 @@
     </BModal>
   </template>
 
-  <!--STATE  unloaded-->
+  <!--STATE unloaded -->
   <template v-else-if="state == 'unloaded'">
     <div class="d-grid justify-content-center my-5">
       <BSpinner label="Načítavanie..."></BSpinner>
     </div>
   </template>
 
-  <!--STATE  error-->
+  <!-- STATE error -->
   <template v-else-if="state == 'error'">
     <h2 class="mt-4">
       <b-badge variant="danger">Nastala neočakávaná chyba systému</b-badge>
     </h2>
   </template>
 
-  <!--custom modal-->
-  <CustomModal v-if="customModalConfig" :modalConfig="customModalConfig"></CustomModal>
+  <!-- custom modal -->
+  <CustomModal v-if="customModalConfig" :modalConfig="customModalConfig" />
 </template>
 
 <script>
@@ -75,11 +111,11 @@
     data() {
       return {
         state: 'unloaded',
-        mainFormModalConfig: { show: false, formData: {} },
+        mainFormModalConfig: { show: false, formData: {}, type: null, mode: null },
         customModalConfig: null,
         expensesGroups: [],
+        incomesGroups: [],
         router: useRouter(),
-        route: useRoute(),
       };
     },
     mounted() {
@@ -87,82 +123,73 @@
     },
     methods: {
       loadData() {
-        listExpensesGroup()
-          .then((response) => {
-            this.expensesGroups = response;
+        Promise.all([listExpensesGroup(), listIncomesGroup()])
+          .then(([expenses, incomes]) => {
+            this.expensesGroups = expenses;
+            this.incomesGroups = incomes;
             this.state = "loaded";
           })
-          .catch(() => {
-            this.state = "error";
-          });
-
+          .catch(() => { this.state = "error"; });
       },
+
       submitForm() {
-        if (this.mainFormModalConfig.mode === 'edit') {
-          this.updateExpensesGroup();
+        if (this.mainFormModalConfig.type === 'expense') {
+          if (this.mainFormModalConfig.mode === 'edit') this.updateExpensesGroup();
+          else this.createExpensesGroup();
         } else {
-          this.createExpensesGroup();
+          if (this.mainFormModalConfig.mode === 'edit') this.updateIncomesGroup();
+          else this.createIncomesGroup();
         }
       },
+
       createExpensesGroup() {
-        const payload = {
-          ...this.mainFormModalConfig.formData,
-          id: generate24CharGUID()
-        };
-        createExpensesGroup(payload)
-          .then(() => {
-            this.loadData();
-            this.closeMainFormModal();
-          })
+        const payload = { ...this.mainFormModalConfig.formData, id: generate24CharGUID() };
+        createExpensesGroup(payload).then(() => { this.loadData(); this.closeMainFormModal(); });
       },
       updateExpensesGroup() {
         updateExpensesGroup(this.mainFormModalConfig.formData.id, this.mainFormModalConfig.formData)
-          .then(() => {
-            this.loadData();
-            this.closeMainFormModal();
-          })
+          .then(() => { this.loadData(); this.closeMainFormModal(); });
       },
-      openDeleteModal(data) {
+
+      createIncomesGroup() {
+        const payload = { ...this.mainFormModalConfig.formData, id: generate24CharGUID() };
+        createIncomesGroup(payload).then(() => { this.loadData(); this.closeMainFormModal(); });
+      },
+      updateIncomesGroup() {
+        updateIncomesGroup(this.mainFormModalConfig.formData.id, this.mainFormModalConfig.formData)
+          .then(() => { this.loadData(); this.closeMainFormModal(); });
+      },
+
+      openDeleteModal(data, type) {
         this.customModalConfig = {
-          title: 'Odstránenie skupiny výdavkov',
-          text: `Naozaj chceš odstrániť skupinu výdavkov ${data.name}?`,
+          title: type === 'expense' ? 'Odstránenie skupiny výdavkov' : 'Odstránenie skupiny príjmov',
+          text: `Naozaj chceš odstrániť skupinu ${data.name}?`,
           closeCallback: () => { this.customModalConfig = null; },
           buttons: [
             {
               text: 'Odstrániť',
               variant: 'btn-danger',
               callback: () => {
-                deleteExpensesGroup(data.id)
-                  .then(() => {
-                    this.loadData();
-                    this.customModalConfig = null;
-                  })
+                const action = type === 'expense' ? deleteExpensesGroup : deleteIncomesGroup;
+                action(data.id).then(() => { this.loadData(); this.customModalConfig = null; });
               }
             },
-            {
-              text: 'Zrušiť',
-              variant: 'btn-secondary',
-              callback: () => { this.customModalConfig = null; }
-            }
+            { text: 'Zrušiť', variant: 'btn-secondary', callback: () => { this.customModalConfig = null; } }
           ]
         };
       },
-      openMainFormModal(formData, mode) {
-        Object.assign(this.mainFormModalConfig, {
-          show: true,
-          formData: { ...formData },
-          mode
-        });
+
+      openMainFormModal(formData, mode, type) {
+        Object.assign(this.mainFormModalConfig, { show: true, formData: { ...formData }, mode, type });
       },
       closeMainFormModal() {
-        Object.assign(this.mainFormModalConfig, {
-          show: false,
-          formData: {}
-        });
+        Object.assign(this.mainFormModalConfig, { show: false, formData: {}, mode: null, type: null });
       },
-      openExpensesGroupDetail(data) {
-        this.router.push({ name: 'expensesGroupDetail', params: { id: data.id } });
+
+      openGroupDetail(data, type) {
+        const routeName = type === 'expense' ? 'expensesGroupDetail' : 'incomesGroupDetail';
+        this.router.push({ name: routeName, params: { id: data.id } });
       },
-    },
+    }
   }
 </script>

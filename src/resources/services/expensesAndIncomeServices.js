@@ -41,6 +41,10 @@ api.interceptors.response.use(
   }
 );
 
+//
+// -----------------------------
+// EXPENSE GROUPS
+// -----------------------------
 export async function listExpenseGroupOverview() {
   try {
     const response = await api.get(`/api/ExpenseGroups/overview/full`);
@@ -105,13 +109,17 @@ export async function deleteExpensesGroup(id) {
   }
 }
 
+//
+// -----------------------------
+// EXPENSES
+// -----------------------------
 export async function listExpense(filters) {
   try {
     const params = new URLSearchParams();
     if (filters.groupId) params.append('groupId', filters.groupId);
 
     const queryString = params.toString();
-    const url = `/api/expense${queryString ? '?' + queryString : ''}`;
+    const url = `/api/Expense${queryString ? '?' + queryString : ''}`;
 
     const response = await api.get(url);
     return response.data;
@@ -138,26 +146,139 @@ export async function createExpense(data) {
 export async function updateExpense(id, data) {
   const alertStore = useAlertStore()
   try {
-    const response = await api.put(`/api/expense/` + id, data);
-
+    const response = await api.put(`/api/Expense/` + id, data);
     alertStore.addAlert('success', 'Výdavok bol úspešne upravený')
-
     return response.data;
   } catch (error) {
     alertStore.addAlert('danger', 'Chyba pri upravovaní výdavku')
     throw error;
   }
 }
+
 export async function deleteExpense(id) {
   const alertStore = useAlertStore()
   try {
-    const response = await api.delete(`/api/expense/` + id);
-
+    const response = await api.delete(`/api/Expense/` + id);
     alertStore.addAlert('success', 'Výdavok bol úspešne vymazaný')
-
     return response.data;
   } catch (error) {
     alertStore.addAlert('danger', 'Chyba pri vymazávaní výdavku')
+    throw error;
+  }
+}
+
+//
+// -----------------------------
+// INCOME GROUPS
+// -----------------------------
+export async function listIncomeGroupOverview() {
+  try {
+    const response = await api.get(`/api/IncomeGroups/overview/full`);
+    return response.data;
+  } catch (error) {
+    console.error("Error listing incomes groups overview:", error);
+    throw error;
+  }
+}
+
+export async function listIncomesGroup() {
+  try {
+    const response = await api.get(`/api/IncomeGroups`);
+    return response.data;
+  } catch (error) {
+    console.error("Error listing income groups:", error);
+    throw error;
+  }
+}
+
+export async function createIncomesGroup(data) {
+  const alertStore = useAlertStore()
+  try {
+    const response = await api.post(`/api/IncomeGroups`, data);
+    alertStore.addAlert('success', 'Skupina príjmov bola úspešne vytvorená')
+    return response.data;
+  } catch (error) {
+    alertStore.addAlert('danger', 'Chyba pri vytváraní skupiny príjmov')
+    throw error;
+  }
+}
+
+export async function updateIncomesGroup(id, data) {
+  const alertStore = useAlertStore()
+  try {
+    const response = await api.put(`/api/IncomeGroups/` + id, data);
+    alertStore.addAlert('success', 'Skupina príjmov bola úspešne upravená')
+    return response.data;
+  } catch (error) {
+    alertStore.addAlert('danger', 'Chyba pri upravovaní skupiny príjmov')
+    throw error;
+  }
+}
+
+export async function deleteIncomesGroup(id) {
+  const alertStore = useAlertStore()
+  try {
+    const response = await api.delete(`/api/IncomeGroups/` + id);
+    alertStore.addAlert('success', 'Skupina príjmov bola úspešne vymazaná')
+    return response.data;
+  } catch (error) {
+    alertStore.addAlert('danger', 'Chyba pri vymazávaní skupiny príjmov')
+    throw error;
+  }
+}
+
+//
+// -----------------------------
+// INCOMES
+// -----------------------------
+export async function listIncome(filters) {
+  try {
+    const params = new URLSearchParams();
+    if (filters.groupId) params.append('groupId', filters.groupId);
+
+    const queryString = params.toString();
+    const url = `/api/Income${queryString ? '?' + queryString : ''}`;
+
+    const response = await api.get(url);
+    return response.data;
+  } catch (error) {
+    console.error("Error listing income:", error);
+    throw error;
+  }
+}
+
+export async function createIncome(data) {
+  const alertStore = useAlertStore()
+  try {
+    const response = await api.post(`/api/Income`, data);
+    alertStore.addAlert('success', 'Príjem bol úspešne vytvorený')
+    return response.data;
+  } catch (error) {
+    alertStore.addAlert('danger', 'Chyba pri vytváraní príjmu')
+    throw error;
+  }
+}
+
+export async function updateIncome(id, data) {
+  const alertStore = useAlertStore()
+  try {
+    const response = await api.put(`/api/Income/` + id, data);
+    alertStore.addAlert('success', 'Príjem bol úspešne upravený')
+    return response.data;
+  } catch (error) {
+    alertStore.addAlert('danger', 'Chyba pri upravovaní príjmu')
+    throw error;
+  }
+}
+
+export async function deleteIncome(id) {
+  const alertStore = useAlertStore()
+  try {
+    const response = await api.delete(`/api/Income/` + id);
+    alertStore.addAlert('success', 'Príjem bol úspešne vymazaný')
+    return response.data;
+  } catch (error) {
+    alertStore.addAlert('danger', 'Chyba pri vymazávaní príjmu')
     throw error;
   }
 }

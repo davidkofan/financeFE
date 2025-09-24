@@ -1,5 +1,5 @@
 <script setup>
-  import { listExpenseGroupOverview } from '@/resources/services/expensesAndIncomeServices';
+  import { listExpenseGroupOverview, listIncomeGroupOverview } from '@/resources/services/expensesAndIncomeServices';
 
   import { Line, Pie, Doughnut } from 'vue-chartjs';
   import ChartJS from 'chart.js/auto';
@@ -25,13 +25,13 @@
     </b-row>
 
     <b-row class="my-2">
-      <b-col cols="12" md="3">
+      <b-col cols="12" md="3" v-for="(income,index) in incomesData" :key="index">
         <b-card bg-variant="success"
                 text-variant="white"
-                header="prijem example"
+                :header="income.name"
                 class="text-center mb-2">
           <b-card-text>
-            <h3>coming soon...</h3>
+            <h3>{{ financeFormatter(sumGroup(income.incomes)) }}</h3>
           </b-card-text>
         </b-card>
       </b-col>
@@ -65,15 +65,45 @@
           </BCol>
 
           <BCol cols="12" md="6" class="mt-2">
-            <Doughnut :data="buildPieChartData(groupData)" :options="chartOptions" class="h-100" />
+            <Doughnut :data="buildPieChartData(groupData, 'expenses')" :options="chartOptions" class="h-100" />
           </BCol>
         </BRow>
       </BCol>
     </BRow>
 
     <div class="border border-1 w-100 my-2"></div>
+
     <h3>Príjmy</h3>
-    <span>coming soon...</span>
+
+    <BRow>
+      <BCol cols="12" md="6" v-for="(groupData, index) in incomesData" :key="index">
+        <BRow class="my-2">
+          <BCol cols="12" md="6">
+            <h4>{{groupData.name}}</h4>
+
+            <BTable striped
+                    hover
+                    head-variant="dark"
+                    :items="groupData.incomes"
+                    :fields="fields"
+                    responsive
+                    foot-clone
+                    tfoot-tr-class="table-success">
+              <template #foot(name)>
+                <strong>Celkom</strong>
+              </template>
+              <template #foot(amount)>
+                <strong>{{ financeFormatter(sumGroup(groupData.incomes)) }}</strong>
+              </template>
+            </BTable>
+          </BCol>
+
+          <BCol cols="12" md="6" class="mt-2">
+            <Doughnut :data="buildPieChartData(groupData, 'incomes')" :options="chartOptions" class="h-100" />
+          </BCol>
+        </BRow>
+      </BCol>
+    </BRow>
 
   </template>
 
@@ -98,6 +128,7 @@
       return {
         state: 'unloaded',
         expensesData: [],
+        incomesData: [],
         chartOptions: {
           responsive: true,
           plugins: {
@@ -130,22 +161,23 @@
     },
     methods: {
       loadData() {
-        listExpenseGroupOverview()
-          .then((response) => {
-            this.expensesData = response;
+        Promise.all([listExpenseGroupOverview(), listIncomeGroupOverview()])
+          .then(([expensesResponse, incomesResponse]) => {
+            this.expensesData = expensesResponse;
+            this.incomesData = incomesResponse;
             this.state = "loaded";
           })
           .catch(() => {
             this.state = "error";
           });
       },
-      buildPieChartData(groupData) {
+      buildPieChartData(groupData, prop) {
         return {
-          labels: groupData.expenses.map(e => e.name),
+          labels: groupData[prop].map(e => e.name),
           datasets: [
             {
               label: 'Výdavky',
-              data: groupData.expenses.map(e => e.amount),
+              data: groupData[prop].map(e => e.amount),
               backgroundColor: [
                 '#FF6384',
                 '#36A2EB',
@@ -161,8 +193,8 @@
           ],
         };
       },
-      sumGroup(expenses) {
-        return expenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
+      sumGroup(data) {
+        return data.reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
       }
     },
   }

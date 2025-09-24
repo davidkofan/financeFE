@@ -22,6 +22,7 @@ import AdminFiscalYearDetail from '@/components/admin/businessFinances/FiscalYea
 //admin - expenses and income
 import AdminExpensesAndIncome from '@/components/admin/expensesAndIncome/ExpensesAndIncomeComponent.vue';
 import AdminExpenseGroupDetail from '@/components/admin/expensesAndIncome/ExpensesGroupdetailComponent.vue';
+import AdminIncomesGroupDetail from '@/components/admin/expensesAndIncome/IncomesGroupdetailComponent.vue';
 
 //admin - import/export
 import AdminImportExport from '@/components/admin/importExport/ImportExportComponent.vue';
@@ -94,6 +95,11 @@ const routes = [
         path: 'expensesGroup/detail/:id',
         name: 'expensesGroupDetail',
         component: AdminExpenseGroupDetail
+      },
+      {
+        path: 'incomesGroup/detail/:id',
+        name: 'incomesGroupDetail',
+        component: AdminIncomesGroupDetail
       },
       {
         path: 'import-export',

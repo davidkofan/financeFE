@@ -213,3 +213,56 @@ export async function deleteBalance(id) {
     throw error;
   }
 }
+
+
+export async function listExpetedIncrease(accountId) {
+  try {
+    const response = await api.get(`/api/ExpectedIncreases/` + accountId);
+    return response.data;
+  } catch (error) {
+    console.error("Error listing ExpectedIncreases:", error);
+    throw error;
+  }
+}
+
+export async function createExpetedIncrease(data) {
+  const alertStore = useAlertStore()
+  try {
+    const response = await api.post(`/api/ExpectedIncreases`, data);
+
+    alertStore.addAlert('success', 'Predpokladaný príjem bol úspešne vytvorený')
+
+    return response.data;
+  } catch (error) {
+    alertStore.addAlert('danger', 'Chyba pri vytváraní predpokladaného príjmu')
+    throw error;
+  }
+}
+
+export async function updateExpetedIncrease(id, data) {
+  const alertStore = useAlertStore()
+  try {
+    const response = await api.put(`/api/ExpectedIncreases/` + id, data);
+
+    alertStore.addAlert('success', 'Predpokladaný príjem bol úspešne upravený')
+
+    return response.data;
+  } catch (error) {
+    alertStore.addAlert('danger', 'Chyba pri upravovaní predpokladaného príjmu')
+    throw error;
+  }
+}
+
+export async function deleteExpetedIncrease(id) {
+  const alertStore = useAlertStore()
+  try {
+    const response = await api.delete(`/api/ExpectedIncreases/` + id);
+
+    alertStore.addAlert('success', 'Predpokladaný príjem bol úspešne vymazaný')
+
+    return response.data;
+  } catch (error) {
+    alertStore.addAlert('danger', 'Chyba pri vymazávaní predpokladaného príjmu')
+    throw error;
+  }
+}
