@@ -13,7 +13,7 @@
   <!-- STATE  loaded -->
   <template v-if="state == 'loaded'">
     <!-- Výdavky -->
-    <h3 class="mb-3">Skupiny výdavkov</h3>
+    <h4 class="mb-3">Výdavky</h4>
     <BButtonGroup class="mb-2">
       <BButton variant="dark" @click="openMainFormModal({}, 'create', 'expense')">Pridať skupinu výdavkov</BButton>
     </BButtonGroup>
@@ -37,10 +37,10 @@
       </b-col>
     </b-row>
 
-    <hr class="my-5" />
+    <hr class="my-3" />
 
     <!-- Príjmy -->
-    <h3 class="mb-3">Skupiny príjmov</h3>
+    <h4 class="mb-3">Príjmy</h4>
     <BButtonGroup class="mb-2">
       <BButton variant="dark" @click="openMainFormModal({}, 'create', 'income')">Pridať skupinu príjmov</BButton>
     </BButtonGroup>

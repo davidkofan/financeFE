@@ -10,6 +10,15 @@
 <template>
   <!--STATE  loaded-->
   <template v-if="state == 'loaded'">
+
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-2">
+      <BButton variant="primary" @click="refreshData" class="mb-2 mb-sm-0">🔄 Obnoviť dáta</BButton>
+      <div v-if="lastUpdated" class="text-muted small">
+        Naposledy aktualizované: {{ lastUpdated }}
+      </div>
+    </div>
+
+
     <b-row class="mb-2">
       <b-col cols="12" md="3" v-for="(year, index) in summaryData" :key="index">
         <b-card :bg-variant="year.assumption ? 'danger' :'success'"
@@ -28,6 +37,8 @@
         <strong>{{ data.value }}</strong>
       </template>
     </BTable>
+
+    <div class="border border-1 w-100 my-2"></div>
 
     <BRow class="mb-5">
       <BCol cols="12" md="6">
@@ -50,6 +61,8 @@
         <Line :data="buildMonthlyExpenseChartData()" :options="chartOptions" class="h-100" />
       </BCol>
     </BRow>
+
+    <div class="border border-1 w-100 my-2"></div>
 
     <div v-for="(financialYear, index) in financialYears" :key="index">
 
@@ -102,6 +115,7 @@
         state: 'unloaded',
         financialYears: [],
         summaryData: [],
+        lastUpdated: null,
         chartOptions: {
           responsive: true,
           plugins: {
@@ -217,13 +231,27 @@
       };
     },
     mounted() {
-      this.loadData();
+      this.loadFromCacheOrFetch();
     },
     methods: {
-      loadData() {
+      loadFromCacheOrFetch() {
+        const cachedData = localStorage.getItem('financialOverview');
+        if (cachedData) {
+          const parsed = JSON.parse(cachedData);
+          this.financialYears = parsed.financialYears;
+          this.summaryData = parsed.summaryData;
+          this.lastUpdated = parsed.lastUpdated;
+          this.state = 'loaded';
+        } else {
+          this.fetchFreshData();
+        }
+      },
+
+      fetchFreshData() {
+        this.state = 'unloaded';
         listFinancialYearOverview()
           .then((response) => {
-
+            const summaryData = [];
             for (let financialYear of response) {
               financialYear.monthlyBalances.push({
                 month: 'Doplatky',
@@ -234,18 +262,17 @@
                 healthInsuranceAssumption: financialYear.financialYear.additionalHealthInsuranceAssumption,
                 socialInsuranceAssumption: financialYear.financialYear.additionalSocialInsuranceAssumption,
                 aditionals: true
-              })
+              });
             }
 
             for (let financialYear of response) {
-
               const totals = financialYear.monthlyBalances.reduce((acc, item) => {
-                acc.income += item.income || 0
-                acc.tax += item.tax || 0
-                acc.healthInsurance += item.healthInsurance || 0
-                acc.socialInsurance += item.socialInsurance || 0
-                return acc
-              }, { income: 0, tax: 0, healthInsurance: 0, socialInsurance: 0 })
+                acc.income += item.income || 0;
+                acc.tax += item.tax || 0;
+                acc.healthInsurance += item.healthInsurance || 0;
+                acc.socialInsurance += item.socialInsurance || 0;
+                return acc;
+              }, { income: 0, tax: 0, healthInsurance: 0, socialInsurance: 0 });
 
               const numberOfMonths = financialYear.monthlyBalances.filter(m => !m.aditionals).length;
               const profit = totals.income - totals.tax - totals.healthInsurance - totals.socialInsurance;
@@ -253,47 +280,60 @@
               const totalObj = {
                 month: 'Celkom',
                 year: financialYear.financialYear.name,
-                numberOfMonths: numberOfMonths,
+                numberOfMonths,
                 income: totals.income,
                 incomePerMonth: totals.income / numberOfMonths,
                 tax: totals.tax,
                 healthInsurance: totals.healthInsurance,
                 socialInsurance: totals.socialInsurance,
-                profit: profit,
+                profit,
                 profitPerMonth: profit / numberOfMonths,
                 incomeAssumption: financialYear.monthlyBalances.some(m => m.incomeAssumption),
                 taxAssumption: financialYear.monthlyBalances.some(m => m.taxAssumption),
                 healthInsuranceAssumption: financialYear.monthlyBalances.some(m => m.healthInsuranceAssumption),
                 socialInsuranceAssumption: financialYear.monthlyBalances.some(m => m.socialInsuranceAssumption),
                 total: true
-              }
+              };
 
-              totalObj.assumption = totalObj.incomeAssumption || totalObj.taxAssumption || totalObj.healthInsuranceAssumption || totalObj.socialInsuranceAssumption;
+              totalObj.assumption =
+                totalObj.incomeAssumption ||
+                totalObj.taxAssumption ||
+                totalObj.healthInsuranceAssumption ||
+                totalObj.socialInsuranceAssumption;
 
               financialYear.monthlyBalances.push(totalObj);
-
-              this.summaryData.push(totalObj);
+              summaryData.push(totalObj);
             }
 
             this.financialYears = response;
+            this.summaryData = summaryData;
+            this.lastUpdated = new Date().toLocaleString('sk-SK');
             this.state = "loaded";
+
+            // uloženie do localStorage
+            localStorage.setItem('financialOverview', JSON.stringify({
+              financialYears: this.financialYears,
+              summaryData: this.summaryData,
+              lastUpdated: this.lastUpdated
+            }));
           })
-          .catch((e) => {
+          .catch(() => {
             this.state = "error";
           });
       },
+
+      refreshData() {
+        localStorage.removeItem('financialOverview');
+        this.fetchFreshData();
+      },
+
       summaryRowClass(row) {
-        if (row.assumption) {
-          return 'table-danger';
-        }
+        if (row.assumption) return 'table-danger';
         return 'table-success';
       },
       rowClass(row) {
-        if (row.total) {
-          return 'table-success';
-        } else if (row.aditionals) {
-          return 'table-warning';
-        }
+        if (row.total) return 'table-success';
+        else if (row.aditionals) return 'table-warning';
       },
       // MESACNE GRAFY
       buildMonthlyIncomeChartData() {

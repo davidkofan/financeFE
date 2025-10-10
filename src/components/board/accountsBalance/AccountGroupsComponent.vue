@@ -10,6 +10,13 @@
   <!--STATE  loaded-->
   <template v-if="state == 'loaded'">
 
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-2">
+      <BButton variant="primary" @click="refreshData" class="mb-2 mb-sm-0">🔄 Obnoviť dáta</BButton>
+      <div v-if="lastUpdated" class="text-muted small">
+        Naposledy aktualizované: {{ lastUpdated }}
+      </div>
+    </div>
+
     <b-row class="mb-2">
       <b-col cols="12" md="3" v-for="(group, index) in accountGroupsActuals" :key="index">
         <b-card :bg-variant="group.variant"
@@ -17,7 +24,7 @@
                 :header="group.name"
                 class="text-center mb-2">
           <b-card-text>
-            <h3>{{ group.value?.toLocaleString('sk-SK') ?? '0' }} €</h3>
+            <h3>{{ financeFormatter(group.value) }}</h3>
           </b-card-text>
         </b-card>
       </b-col>
@@ -25,9 +32,12 @@
 
     <template v-for="(group, index) in groups">
 
+      <div class="border border-1 w-100 my-2"></div>
+
       <div v-if="group.accounts.length" :key="index">
         <h4>{{ group.name }}</h4>
         <div class="mb-1">{{group.description}}</div>
+
 
         <b-row>
           <b-col cols="12" md="6">
@@ -37,17 +47,35 @@
                     :per-page="group.table.perPage"
                     :current-page="group.table.currentPage"
                     responsive>
+
+              <!-- formátovanie obdobia -->
               <template #cell(period)="data">
                 <strong>{{ data.value }}</strong>
               </template>
+
+              <!-- formátovanie sumy -->
               <template #cell(sum)="data">
-                <strong>{{ data.value }}</strong>
+                <strong>{{ financeFormatter(data.value) }}</strong>
               </template>
+
+              <!-- formátovanie sumy -->
+              <template #cell()="data">
+                {{ data.value ? financeFormatter(data.value) : "-" }}
+              </template>
+
+              <!-- formátovanie rozdielu -->
               <template #cell(diff)="data">
-                <span class="text-primary" v-if="data.item.expectation"> {{data.value}} </span>
-                <span v-else :class="data.unformatted < 0 ? 'text-danger' : 'text-success'"> {{data.value}} </span>
+                <span class="text-primary" v-if="data.item.expectation">
+                  {{ financeFormatter(data.value) }}
+                </span>
+                <span v-else :class="data.unformatted < 0 ? 'text-danger' : 'text-success'">
+                  {{ financeFormatter(data.value) }}
+                </span>
               </template>
+
+
             </BTable>
+
 
             <!-- Ovládanie stránkovania -->
             <div class="d-flex justify-content-between align-items-center mt-2">
@@ -72,12 +100,13 @@
 
           </b-col>
           <b-col cols="12" md="6">
-            <div class="ratio mb-5 mb-md-0 mt-2 mt-md-0 lineContainer">
+            <div class="ratio mb-5 mb-md-2 mt-2 mt-md-0 lineContainer">
               <Line :data="group.chartData"
                     :options="chartOptions" class="h-100" />
             </div>
           </b-col>
         </b-row>
+
       </div>
 
     </template>
@@ -105,6 +134,7 @@
         state: 'unloaded',
         groups: [],
         accountGroupsActuals: [],
+        lastUpdated: null,
         chartOptions: {
           responsive: true,
           plugins: {
@@ -117,17 +147,32 @@
       };
     },
     mounted() {
-      this.loadData();
+      this.loadFromCacheOrFetch();
     },
     methods: {
-      loadData() {
+      // 🔹 Najprv skúsi načítať z localStorage, inak fetchne
+      loadFromCacheOrFetch() {
+        const cachedData = localStorage.getItem('accountGroupOverview');
+        if (cachedData) {
+          const parsed = JSON.parse(cachedData);
+          this.groups = parsed.groups;
+          this.accountGroupsActuals = parsed.accountGroupsActuals;
+          this.lastUpdated = parsed.lastUpdated;
+          this.state = 'loaded';
+        } else {
+          this.fetchFreshData();
+        }
+      },
+
+      // 🔹 Fetch čerstvých dát zo služby a uloženie do cache
+      fetchFreshData() {
+        this.state = 'unloaded';
         listAccountGroupOverview()
           .then((groups) => {
             for (let group of groups) {
               if (group.accounts.length) {
                 group.table = this.getTable(group.accounts, group.expectedIncreases);
                 group.chartData = this.getChartData(group.accounts, group.expectedIncreases);
-
               }
             }
 
@@ -138,20 +183,36 @@
             }));
 
             this.groups = groups;
-            this.state = "loaded";
+            this.lastUpdated = new Date().toLocaleString('sk-SK');
+            this.state = 'loaded';
+
+            // 🔸 uloženie do localStorage
+            localStorage.setItem(
+              'accountGroupOverview',
+              JSON.stringify({
+                groups: this.groups,
+                accountGroupsActuals: this.accountGroupsActuals,
+                lastUpdated: this.lastUpdated
+              })
+            );
           })
           .catch(() => {
-            this.state = "error";
+            this.state = 'error';
           });
       },
+
+      // 🔹 Vymaže cache a načíta nové dáta
+      refreshData() {
+        localStorage.removeItem('accountGroupOverview');
+        this.fetchFreshData();
+      },
+
+      // --- ostatné metódy ostávajú rovnaké ---
       getAccoundFields(accounts) {
-        return accounts.map(account => {
-          return { key: account.name, label: account.name }
-        })
+        return accounts.map(account => ({ key: account.name, label: account.name }));
       },
       getUniquePeriods(accounts) {
-        const periods = []
-
+        const periods = [];
         accounts.forEach(account => {
           account.balances.forEach(balance => {
             const key = `${balance.year}-${String(balance.month).padStart(2, "0")}`;
@@ -160,18 +221,15 @@
             }
           });
         });
-
         return Array.from(periods).sort();
       },
       getTable(accounts, expectedIncreases) {
         const periods = this.getUniquePeriods([...accounts, { balances: expectedIncreases }]);
-
         let prevSum = null;
 
         const rows = periods.map(key => {
           const [year, month] = key.split("-").map(Number);
           const row = { period: `${month}/${year}` };
-
           let sum = 0;
 
           accounts.forEach(acc => {
@@ -181,31 +239,26 @@
             sum += value;
           });
 
-
           if (sum) {
-            row.diff = prevSum !== null ? sum - prevSum : null; // rozdiel oproti predchádzajúcemu mesiacu
+            row.diff = prevSum !== null ? sum - prevSum : null;
             row.sum = sum;
-          }
-          else {
+          } else {
             const expectedIncrease = expectedIncreases.find(inc => inc.year === year && inc.month === month);
             if (expectedIncrease) {
-              row.diff = expectedIncrease.amount; // rozdiel oproti predchádzajúcemu mesiacu
+              row.diff = expectedIncrease.amount;
               row.sum = expectedIncrease.amount + prevSum;
               row.expectation = true;
-
               sum = expectedIncrease.amount + prevSum;
             }
           }
 
           prevSum = sum;
-
           return row;
         });
 
         const columns = accounts.map(acc => ({
           key: acc.id,
           label: acc.name + (acc.description ? ` (${acc.description})` : ''),
-          formatter: (value) => value ? `${value.toLocaleString()} €` : '-',
           class: 'text-center'
         }));
 
@@ -214,14 +267,13 @@
           {
             key: 'sum',
             label: 'Spolu',
-            formatter: (value) => `${value.toLocaleString()} €`,
             class: 'text-center'
           },
           {
             key: 'diff',
             label: 'Prírastok',
             formatter: (value) =>
-              value === null ? '-' : `${value >= 0 ? '+' : ''}${value.toLocaleString()} €`,
+              value === null ? '-' : `${value >= 0 ? '+' : ''}${value}`,
             class: 'text-center'
           }
         );
@@ -229,7 +281,6 @@
         const actualRow = [...rows].reverse().find(r => !r.expectation);
         const actual = actualRow ? actualRow.sum : 0;
 
-        // výpočet celkového počtu strán
         const perPage = 10;
         const totalPages = Math.ceil(rows.length / perPage);
 
@@ -238,24 +289,19 @@
           columns,
           actual,
           perPage,
-          currentPage: totalPages || 1, // nastaviť na poslednú stranu
+          currentPage: totalPages || 1,
           perPageOptions: [5, 10, 20, 50]
         };
       },
 
       getChartData(accounts, expectedIncreases = []) {
         const labels = this.getUniquePeriods([...accounts, { balances: expectedIncreases }]);
-
-        // Dataset pre každý účet
         const datasets = accounts.map((account, i) => {
           const data = labels.map(label => {
             const [year, month] = label.split("-");
-            const balance = account.balances.find(
-              b => b.year == year && b.month == Number(month)
-            );
+            const balance = account.balances.find(b => b.year == year && b.month == Number(month));
             return balance?.amount ?? null;
           });
-
           return {
             label: account.name,
             data,
@@ -264,15 +310,12 @@
           };
         });
 
-        // Dataset pre súčet všetkých účtov
         let prevSum = null;
         const sumReal = [];
         const sumPred = [];
 
         labels.forEach(label => {
           const [year, month] = label.split("-").map(Number);
-
-          // reálne sumy
           let sum = accounts.reduce((s, acc) => {
             const balance = acc.balances.find(b => b.year === year && b.month === month);
             return s + (balance?.amount ?? 0);
@@ -283,7 +326,6 @@
             sumPred.push(null);
             prevSum = sum;
           } else {
-            // ak nie je reálna hodnota, použijeme očakávaný nárast
             const exp = expectedIncreases.find(e => e.year === year && e.month === month);
             if (exp && prevSum !== null) {
               const predicted = prevSum + exp.amount;
@@ -320,11 +362,9 @@
           return `${m}/${y}`;
         });
 
-        return {
-          labels: formattedLabels,
-          datasets
-        };
+        return { labels: formattedLabels, datasets };
       },
+
       getColor(index) {
         const colors = [
           'rgb(75, 192, 192)',
@@ -336,6 +376,14 @@
         ];
         return colors[index % colors.length];
       },
-    },
+
+      financeFormatter(val) {
+        if (val == null || isNaN(val)) return '-';
+        return `${Number(val).toLocaleString('sk-SK', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        })} €`;
+      },
+    }
   }
 </script>
