@@ -48,11 +48,12 @@
         <b-row class="my-2">
           <b-col cols="12" md="6">
             <h4>{{ group.name }}</h4>
-            <b-table striped hover head-variant="dark"
+            <BTable striped hover head-variant="dark"
                      :items="group.expenses"
                      :fields="fields"
                      responsive
                      foot-clone
+                     class="rounded"
                      tfoot-tr-class="table-success">
               <template #foot(name)>
                 <strong>Celkom</strong>
@@ -60,7 +61,7 @@
               <template #foot(amount)>
                 <strong>{{ financeFormatter(sumGroup(group.expenses)) }}</strong>
               </template>
-            </b-table>
+            </BTable>
           </b-col>
           <b-col cols="12" md="6" class="mt-2">
             <Doughnut :data="buildPieChartData(group, 'expenses')" :options="chartOptions" class="h-100" />

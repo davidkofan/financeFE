@@ -14,7 +14,17 @@
 <template>
   <!-- STATE  loaded-->
   <template v-if="state == 'loaded'">
-    <BTable striped hover head-variant="dark" :items="balances" :fields="fields" responsive>
+    <BButton variant="dark" class="mb-2" @click="openMainFormModal({}, 'create')">Pridať predpokladaný príjem</BButton>
+
+    <BTable striped
+            hover
+            responsive
+            head-variant="dark"
+            :items="balances"
+            :fields="fields"
+            class="rounded"
+            :current-page="currentPage"
+            :per-page="perPage">
       <template #cell(buttons)="data">
         <BButtonGroup>
           <BButton variant="dark" @click="openMainFormModal(data.item, 'edit')">Úprava</BButton>
@@ -26,7 +36,20 @@
       </template>
     </BTable>
 
-    <BButton variant="dark" @click="openMainFormModal({}, 'create')">Pridať predpokladaný príjem</BButton>
+    <!-- Ovládanie stránkovania -->
+    <div class="d-flex justify-content-between align-items-center mt-2">
+      <span></span>
+
+      <BPagination v-model="currentPage"
+                   :total-rows="balances.length"
+                   :per-page="perPage"
+                   align="center"
+                   class="my-3" />
+
+      <BFormSelect v-model="perPage"
+                   :options="[5, 10, 20, 50]"
+                   class="w-auto mb-2" />
+    </div>
 
     <BModal :title="mainFormModalConfig.mode === 'create' ? 'Pridať predpokladaný príjem' : 'Upraviť predpokladaný príjem'" v-model="mainFormModalConfig.show" noFooter @hidden="closeMainFormModal()" teleport-to="body">
       <BForm @submit.prevent="submitForm">
@@ -75,13 +98,15 @@
     data() {
       return {
         state: 'unloaded',
+        currentPage: 1,
+        perPage: 5, // počet záznamov na stránku
         mainFormModalConfig: { show: false, formData: {} },
         customModalConfig: null,
         balances: [],
         fields: [
           {
             key: 'period',
-            label: '',
+            label: 'Mesiac',
             class: 'text-center'
           },
           {
@@ -138,6 +163,7 @@
             });
             this.balances = response;
 
+            this.currentPage = 1; // 🔹 reset na prvú stránku
             this.state = "loaded";
           })
           .catch(() => {

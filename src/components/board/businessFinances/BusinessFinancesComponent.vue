@@ -32,7 +32,14 @@
       </b-col>
     </b-row>
 
-    <BTable striped hover head-variant="dark" :items="summaryData" :fields="summaryTableFields" responsive :tbody-tr-class="summaryRowClass">
+    <BTable striped
+            hover
+            responsive
+            head-variant="dark"
+            :items="summaryData"
+            :fields="summaryTableFields"
+            :tbody-tr-class="summaryRowClass"
+            class="rounded">
       <template #cell(year)="data">
         <strong>{{ data.value }}</strong>
       </template>
@@ -69,7 +76,14 @@
       <h4>Fiškálny rok {{ financialYear.financialYear.name }}</h4>
       <div class="mb-1">{{financialYear.financialYear.description}}</div>
 
-      <BTable striped hover head-variant="dark" :items="financialYear.monthlyBalances" :fields="fields" responsive :tbody-tr-class="rowClass">
+      <BTable striped
+              hover
+              responsive
+              head-variant="dark"
+              :items="financialYear.monthlyBalances"
+              :fields="fields"
+              :tbody-tr-class="rowClass"
+              class="rounded">
         <template #cell()="data">
           <span :class="data.item.total ? 'fw-bold' : ''">{{ data.value }}</span>
         </template>

@@ -14,7 +14,17 @@
 <template>
   <!-- STATE  loaded-->
   <template v-if="state == 'loaded'">
-    <BTable striped hover head-variant="dark" :items="balances" :fields="fields" responsive>
+    <BButton variant="dark" class="mb-2" @click="openMainFormModal({}, 'create')">Pridať stav účtu</BButton>
+
+    <BTable striped
+            hover
+            responsive
+            head-variant="dark"
+            class="rounded"
+            :items="balances"
+            :fields="fields"
+            :current-page="currentPage"
+            :per-page="perPage">
       <template #cell(buttons)="data">
         <BButtonGroup>
           <BButton variant="dark" @click="openMainFormModal(data.item, 'edit')">Úprava</BButton>
@@ -26,17 +36,30 @@
       </template>
     </BTable>
 
-    <BButton variant="dark" @click="openMainFormModal({}, 'create')">Pridať stav účtu</BButton>
+    <!-- Ovládanie stránkovania -->
+    <div class="d-flex justify-content-between align-items-center mt-2">
+      <span></span>
+
+      <BPagination v-model="currentPage"
+                   :total-rows="balances.length"
+                   :per-page="perPage"
+                   align="center"
+                   class="my-3" />
+
+      <BFormSelect v-model="perPage"
+                   :options="[5, 10, 20, 50]"
+                   class="w-auto mb-2" />
+    </div>
 
     <BModal :title="mainFormModalConfig.mode === 'create' ? 'Pridať stav účtu' : 'Upraviť stav účtu'" v-model="mainFormModalConfig.show" noFooter @hidden="closeMainFormModal()" teleport-to="body">
       <BForm @submit.prevent="submitForm">
         <div class="row">
           <BFormGroup label="Rok" label-for="year" class="col-12 col-md-4">
-            <BForm-select id="year" v-model="mainFormModalConfig.formData.year" :options="yearOptions" required/>
+            <BForm-select id="year" v-model="mainFormModalConfig.formData.year" :options="yearOptions" required />
           </BFormGroup>
 
           <BFormGroup label="Mesiac" label-for="month" class="col-12 col-md-4">
-            <BForm-select id="month" v-model="mainFormModalConfig.formData.month" :options="monthOptions" required/>
+            <BForm-select id="month" v-model="mainFormModalConfig.formData.month" :options="monthOptions" required />
           </BFormGroup>
 
           <BFormGroup label="Hodnota" label-for="amount" class="col-12 col-md-4">
@@ -75,13 +98,15 @@
     data() {
       return {
         state: 'unloaded',
+        currentPage: 1,
+        perPage: 5, // počet záznamov na stránku
         mainFormModalConfig: { show: false, formData: {} },
         customModalConfig: null,
         balances: [],
         fields: [
           {
             key: 'period',
-            label: '',
+            label: 'Mesiac',
             class: 'text-center'
           },
           {
@@ -134,8 +159,10 @@
             response.forEach(balance => {
               balance.period = balance.year + '/' + balance.month;
             });
-            this.balances = response;
-
+            this.balances = response.sort((a, b) =>
+              `${b.year}${b.month}`.localeCompare(`${a.year}${a.month}`)
+            );
+            this.currentPage = 1; // 🔹 reset na prvú stránku
             this.state = "loaded";
           })
           .catch(() => {

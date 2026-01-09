@@ -46,6 +46,7 @@
                     :fields="group.table.columns"
                     :per-page="group.table.perPage"
                     :current-page="group.table.currentPage"
+                    class="rounded"
                     responsive>
 
               <!-- formátovanie obdobia -->
@@ -281,7 +282,7 @@
         const actualRow = [...rows].reverse().find(r => !r.expectation);
         const actual = actualRow ? actualRow.sum : 0;
 
-        const perPage = 10;
+        const perPage = 25;
         const totalPages = Math.ceil(rows.length / perPage);
 
         return {
@@ -290,7 +291,7 @@
           actual,
           perPage,
           currentPage: totalPages || 1,
-          perPageOptions: [5, 10, 20, 50]
+          perPageOptions: [10, 25, 50]
         };
       },
 
